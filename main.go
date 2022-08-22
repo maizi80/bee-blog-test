@@ -1,34 +1,38 @@
 package main
 
 import (
+	_ "bee-blog/inits"
+	"bee-blog/models"
 	_ "bee-blog/routers"
-	"database/sql"
 	"fmt"
+	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/spf13/viper"
 )
 
 func main() {
-	viper.AddConfigPath(".")
-	viper.SetConfigName("env")
-	viper.SetConfigType("yaml")
-	err := viper.ReadInConfig()
-	if err != nil {
-		_ = fmt.Errorf("fatal error config file: %w", err)
+	o := orm.NewOrm()
+	var article models.Article
+	article.Title = "title2"
+	article.Introduction = "introduction"
+	article.Content = "content"
+	article.Image = "image"
+	article.CategoryId = 1
+
+	id, err := o.Insert(&article)
+	if err == nil {
+		fmt.Printf("id:%d\n", id)
 	}
-	appname := viper.Get("appname")
-	fmt.Println(appname)
-	dsn := "root:0987abc123@tcp(192.168.9.204:3306)/bee-blog"
-	//打开数据库链接
-	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		fmt.Println("db err:", err)
-		return
+
+	a := models.Article{Id: 1}
+	e := o.Read(&a)
+
+	if e == orm.ErrNoRows {
+		fmt.Println("查询不到")
+	} else if e == orm.ErrMissPK {
+		fmt.Println("找不到主键")
+	} else {
+		fmt.Printf("id:%d Title:%s\n", a.Id, a.Title)
 	}
-	//关闭数据库链接
-	defer db.Close()
-	fmt.Println("数据库链接成功")
 
 	beego.Run()
 }

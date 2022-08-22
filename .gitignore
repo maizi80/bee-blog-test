@@ -1,3 +1,4 @@
-bee-blog.*exe*
+bee-blog.exe*
 go.sum
 .idea/*
+env.yaml

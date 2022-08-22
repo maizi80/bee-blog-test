@@ -1,2 +1,3 @@
-bee-blog.exe
-go.mod
+bee-blog.*exe*
+go.sum
+.idea/*

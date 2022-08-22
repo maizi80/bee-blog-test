@@ -2,3 +2,4 @@ bee-blog.exe*
 go.sum
 .idea/*
 env.yaml
+lastupdate.tmp

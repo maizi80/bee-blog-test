@@ -62,23 +62,23 @@
 		<!-- 判断文章输出样式 -->
 			<div class="post-entry">
 				<div class="feature">
-					<a href='{{urlfor "ArticleController.Get" "id" $article.Id}}'><div class="overlay"><i class="iconfont"></i></div>
+					<a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'><div class="overlay"><i class="iconfont"></i></div>
       			<img src="{{$article.Image}}">
     			</a>
 				</div>
-				<h1 class="entry-title"><a href='{{urlfor "ArticleController.Get" "id" $article.Id}}'>{{if compare $article.Status 1}}<span style="color:#ff6d6d;font-weight:600">[置顶] </span>  {{end}}{{$article.Title}}</a></h1>
+				<h1 class="entry-title"><a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'>{{if compare $article.Status 1}}<span style="color:#ff6d6d;font-weight:600">[置顶] </span>  {{end}}{{$article.Title}}</a></h1>
 				<div class="p-time">
 					<i class="iconfont"></i> {{date $article.PublishedAt "Y-m-d"}}<i class="iconfont hotpost" style="margin-left: 5px;"></i>
 				</div>
-				<a href='{{urlfor "ArticleController.Get" "id" $article.Id}}'><p>{{$article.Introduction}}...</p></a>
+				<a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'><p>{{$article.Introduction}}...</p></a>
 				<!-- 文章下碎碎念 -->
 				<footer class="entry-footer">
 					<div class="post-more">
-						<a href='{{urlfor "ArticleController.Get" "id" $article.Id}}'><i class="iconfont"></i></a>
+						<a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'><i class="iconfont"></i></a>
 					</div>
 					<div class="info-meta">
 						<div class="comnum">
-							<span><i class="iconfont"></i><a href='{{urlfor "ArticleController.Get" "id" $article.Id}}'>{{$article.CommentCount}}条评论</a></span>
+							<span><i class="iconfont"></i><a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'>{{$article.CommentCount}}条评论</a></span>
 						</div>
 						<div class="views">
 							<span><i class="iconfont"></i>{{$article.ViewCount}}万 热度</span>

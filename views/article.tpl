@@ -64,11 +64,29 @@
             <!-- 版权声明 -->
             <div class="open-message">
                 <p>声明：Bee-Blog|版权所有，违者必究|如未注明，均为原创|本网站采用<a href="#" target="_blank" rel="nofollow noopener noreferrer">BY-NC-SA</a>协议进行授权</p>
-                <p>转载：转载请注明原文链接 - <a href='{{urlfor "ArticleController.Get" "id" .article.Id}}'>{{.Title}}</a></p>
+                <p>转载：转载请注明原文链接 - <a href='{{urlfor "ArticleController.Get" ":id" .article.Id}}'>{{.Title}}</a></p>
             </div>
             <!-- 相邻文章 -->
             <section class="post-squares nextprev">
-                <div class="post-nepre half previous"><a href="/Web/Akina.html" rel="prev"><div class="background" style="background-image:url(/static/images/random/Akina.jpg);"></div><span class="label">Previous Post</span><div class="info"><h3>Akina for Typecho 主题模板</h3><hr></div></a></div><div class="post-nepre half next"><a href="/Android/iwork8-root.html" rel="next"><div class="background" style="background-image:url(/static/images/random/deu2.jpg);"></div><span class="label">Next Post</span><div class="info"><h3>酷比魔方iwork8 air（i1-tf）root固件</h3><hr></div></a></div>		</section>
+                <div class="post-nepre half previous">
+                    <a href='{{urlfor "ArticleController.Get" ":id" .pre.Id}}' rel="prev">
+                        <div class="background" style="background-image:url({{.pre.Image}});"></div>
+                        <span class="label">Previous Post</span>
+                        <div class="info"><h3>{{if .pre.Title}}{{.pre.Title}}{{else}}无{{end}}</h3>
+                            <hr>
+                        </div>
+                    </a>
+                </div>
+                <div class="post-nepre half next">
+                    <a href='{{urlfor "ArticleController.Get" ":id" .next.Id}}' rel="next">
+                        <div class="background" style="background-image:url({{.next.Image}});"></div>
+                        <span class="label">Next Post</span>
+                        <div class="info"><h3>{{if .next.Title}}{{.next.Title}}{{else}}无{{end}}</h3>
+                            <hr>
+                        </div>
+                    </a>
+                </div>
+            </section>
             <!-- 判断文章加密结束 -->
             <!-- 个人信息 -->
             <section class="author-profile">

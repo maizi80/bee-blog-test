@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"bee-blog/models"
-	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"strconv"
@@ -17,6 +16,11 @@ func (a *ArticleController) Get() {
 	aid, _ := strconv.ParseUint(id, 0, 8)
 	article := models.Article{Id: uint(aid)}
 	o := orm.NewOrm()
+	// 流量量+1
+	o.QueryTable("article").Filter("id", uint(aid)).Update(orm.Params{
+		"view_count": orm.ColValue(orm.ColAdd, 1),
+	})
+
 	if err := o.Read(&article); err != nil {
 		a.Abort("404")
 	}
@@ -24,12 +28,10 @@ func (a *ArticleController) Get() {
 	// 上一篇
 	var pre models.Article
 	qs.Filter("id__lt", uint(aid)).OrderBy("-id").Limit(1).One(&pre)
-	fmt.Println(pre)
 
 	// 下一篇
 	var next models.Article
 	qs.Filter("id__gt", uint(aid)).OrderBy("id").Limit(1).One(&next)
-	fmt.Println(next)
 
 	a.Data["article"] = article
 	a.Data["Title"] = article.Title

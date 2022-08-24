@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/static/css/OwO.css" type="text/css">
     <link rel="stylesheet" href="/static/css/dark.css" type="text/css">  <!-- 个性化选项 CSS 代码 -->
     <link rel="stylesheet" href="/static/css/blog.css" type="text/css">  <!-- 个性化选项 CSS 代码 -->
-
+    {{.HtmlHead}}
 </head>
 <body class="home blog hfeed">
 <!-- 加载动画 -->
@@ -85,6 +85,7 @@
 
 {{.LayoutContent}}
 
+{{.Comment}}
 <!-- 页底信息 -->
 <footer id="colophon" class="site-footer" role="contentinfo">
     <!-- 请尊重作者！至少保留主题名称及其超链接，谢谢！ -->
@@ -158,6 +159,6 @@
 <script type="text/javascript" src="/static/js/jquery.pjax.js."></script>
 <script type="text/javascript" src="/static/js/baguetteBox.min.js."></script>
 <script type="text/javascript" src="/static/js/global.js."></script>
-
+{{.Scripts}}
 </body>
 </html>

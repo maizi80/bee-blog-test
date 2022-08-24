@@ -31,8 +31,8 @@ func (m *Article_20220822_162618) Up() {
 	m.NewCol("view_count").SetDataType("int(11)").SetUnsigned(true).SetDefault("0").SetNullable(false)
 	m.NewCol("comment_count").SetDataType("int(11)").SetUnsigned(true).SetDefault("0").SetNullable(false)
 	m.NewCol("like_count").SetDataType("int(11)").SetUnsigned(true).SetDefault("0").SetNullable(false)
-	m.NewCol("created_at").SetDataType("datetime").SetDefault("CURRENT_TIMESTAMP")
-	m.NewCol("updated_at").SetDataType("datetime").SetDefault("CURRENT_TIMESTAMP")
+	m.NewCol("created_at").SetDataType("datetime").SetDefault("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	m.NewCol("updated_at").SetDataType("datetime").SetDefault("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	m.NewCol("published_at").SetDataType("datetime")
 	m.SQL(m.GetSQL())
 

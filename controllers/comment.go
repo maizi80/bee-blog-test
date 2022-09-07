@@ -4,7 +4,6 @@ import (
 	"bee-blog/commons"
 	"bee-blog/models"
 	"bee-blog/validations"
-	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/prometheus/common/log"
@@ -42,7 +41,7 @@ func (c *CommentController) Post() {
 			log.Error("insert user err:" + e.Error())
 		}
 	}
-	fmt.Println(d)
+
 	co := models.Comment{
 		Username: d.Name,
 		Content:  d.Content,
@@ -53,5 +52,6 @@ func (c *CommentController) Post() {
 	if err != nil {
 		commons.Fail(c.Ctx, "添加失败", nil, "")
 	}
+	
 	commons.Success(c.Ctx, insert, "添加成功", "")
 }

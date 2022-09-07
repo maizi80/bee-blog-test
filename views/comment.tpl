@@ -7,72 +7,68 @@
     </div>
     <!-- 输出评论信息 -->
     <div class="comments-main" style="display: none;">
-        <h3 id="comments-list-title">Comments | <a><span class="noticom">248</span>条评论</a></h3>
+        <h3 id="comments-list-title">Comments | <a><span class="noticom">{{.article.CommentCount}}</span>条评论</a></h3>
         <div id="loading-comments"><span></span></div>
         <!-- 评论内容 -->
         <div id="comments-ajax">
             <ol class="comment-list">
-                <li class="comment comment-even depth-1" id="li-comment-1711">
-                    <div id="comment-1711" class="comment_body contents">
+                {{range $key,$common := .commons}}
+                <li class="comment comment-even depth-1" id="li-comment-{{$common.Id}}">
+                    <div id="comment-{{$common.Id}}" class="comment_body contents">
                         <div class="profile">
-                            <a href="/Web/userAkina.html"><img alt="萧瑟" src="/static/images/g" srcset="//q.qlogo.cn/g?b=qq&amp;nk=270806847&amp;s=160 2x" class="avatar avatar-50 photo" height="50" width="50"></a>
+                            <a href="#"><img alt="{{$common.UserName}}" src="/static/images/akinadeaava.jpg" class="avatar avatar-50 photo" height="50" width="50"></a>
                         </div>
                         <section class="commeta">
                             <div class="left">
-                                <h4 class="author"><a href="/Web/userAkina.html"><img alt="萧瑟" src="/static/images/g" srcset="//q.qlogo.cn/g?b=qq&amp;nk=270806847&amp;s=160 2x" class="avatar avatar-50 photo" height="50" width="50">萧瑟<span class="isauthor" title="Author"><i class="iconfont"></i></span></a></h4>
+                                <h4 class="author"><a href="#">{{$common.Content}}</a></h4>
                             </div>
-                            <a rel="nofollow" class="comment-reply-link" href="/Web/userAkina.html" onclick="return TypechoComment.reply(&#39;comment-1711&#39;, 1711);" aria-label="回复给萧瑟">回复</a>
+                            <a rel="nofollow" class="comment-reply-link" href="#" onclick="return TypechoComment.reply(&#39;comment-{{$common.Id}}&#39;, {{$common.Id}});" aria-label="回复给{{$common.UserName}}">回复</a>
                             <div class="right">
-                                <div class="info"><time datetime="2022-04-27">2022年04月27日</time></div>
+                                <div class="info"><time datetime="{{$common.CreatedAt}}">{{$common.CreatedAt}}</time></div>
                             </div>
                         </section>
                         <div class="body">
                             <p>
                                 <!-- 评论@ -->
-                                请问博主这套主题有意向实现ajax评论吗 <!-- 评论内容 -->
+                                {{$common.Content}} <!-- 评论内容 -->
                             </p>
                         </div>
                     </div>
                     <!-- 嵌套评论代码 -->
+                    {{if gt ($common.Children|len) 0}}
                     <div class="children">
                         <ol class="comment-list">
-                            <li class="comment comment-odd depth-2" id="li-comment-1712">
-                                <div id="comment-1712" class="comment_body contents">
+                            {{range $k,$children := $common.Children}}
+                            <li class="comment comment-odd depth-2" id="li-comment-{{$children.Id}}">
+                                <div id="comment-{{$children.Id}}" class="comment_body contents">
                                     <div class="profile">
-                                        <a href="/"><img alt="子虚之人" src="/static/images/tx20110211.png" srcset="https://image.zhebk.cn/tx20110211.png 2x" class="avatar avatar-50 photo" height="50" width="50"></a>
+                                        <a href="#"><img alt="{{$children.UserName}}" src="/static/images/akinadeaava.jpg" class="avatar avatar-50 photo" height="50" width="50"></a>
                                     </div>
                                     <section class="commeta">
                                         <div class="left">
-                                            <h4 class="author"><a href="/"><img alt="子虚之人" src="/static/images/tx20110211.png" srcset="https://image.zhebk.cn/tx20110211.png 2x" class="avatar avatar-50 photo" height="50" width="50">子虚之人<span class="isauthor" title="Author"><i class="iconfont"></i></span></a></h4>
+                                            <h4 class="author"><a href="#">{{$children.UserName}}</a></h4>
                                         </div>
-                                        <a rel="nofollow" class="comment-reply-link" href="/Web/userAkina.html" onclick="return TypechoComment.reply(&#39;comment-1712&#39;, 1712);" aria-label="回复给子虚之人">回复</a>
+                                        <a rel="nofollow" class="comment-reply-link" href="#" onclick="return TypechoComment.reply(&#39;comment-{{$children.Id}}&#39;, {{$children.Id}});" aria-label="回复给{{$children.UserName}}">回复</a>
                                         <div class="right">
-                                            <div class="info"><time datetime="2022-04-29">2022年04月29日</time></div>
+                                            <div class="info"><time datetime="{{$children.CreatedAt}}">{{$children.CreatedAt}}</time></div>
                                         </div>
                                     </section>
                                     <div class="body">
                                         <p>
-                                            <a href="/Web/userAkina.html#" rel="nofollow" class="cute atreply">@萧瑟</a> :                                    <!-- 评论@ -->
-                                            已经是ajax评论 <!-- 评论内容 -->
+                                            <a href="#" rel="nofollow" class="cute atreply">@{{$common.UserName}}</a> :                                    <!-- 评论@ -->
+                                            {{$children.Content}} <!-- 评论内容 -->
                                         </p>
                                     </div>
                                 </div>
                             </li>
+                            {{end}}
                         </ol>
                     </div>
+                    {{end}}
                 </li>
+                {{end}}
             </ol>
         </div>
-        <!-- 评论翻页 -->
-        <nav id="comments-navi">
-            <ol class="page-navigator">
-                <li class="current"><a href="/Web/userAkina.html/comment-page-1#comments">1</a></li>
-                <li><a href="/Web/userAkina.html/comment-page-2#comments">2</a></li>
-                <li><span>...</span></li>
-                <li><a href="/Web/userAkina.html/comment-page-15#comments">15</a></li>
-                <li class="next"><a href="/Web/userAkina.html/comment-page-2#comments">→</a></li>
-            </ol>
-        </nav>
         <!--评论框-->
         <!-- 判断设置是否允许对当前文章进行评论 -->
         <div id="respond_box">

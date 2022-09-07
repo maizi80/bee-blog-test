@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"bee-blog/models"
+	"bee-blog/services"
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"strconv"
@@ -33,10 +34,13 @@ func (a *ArticleController) Get() {
 	var next models.Article
 	qs.Filter("id__gt", uint(aid)).OrderBy("id").Limit(1).One(&next)
 
+	// 评论列表
+	commons := services.GetComments(int(aid))
 	a.Data["article"] = article
 	a.Data["Title"] = article.Title
 	a.Data["pre"] = pre
 	a.Data["next"] = next
+	a.Data["commons"] = commons
 	a.LayoutSections = make(map[string]string)
 	a.LayoutSections["Scripts"] = "a_js.tpl"
 	a.LayoutSections["HtmlHead"] = "a_head.tpl"

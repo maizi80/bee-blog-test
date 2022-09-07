@@ -68,7 +68,7 @@ var ajaxcomments = function(){
                 let h = '<ol class="comment-list">\n' +
                     '       <li class="comment comment-even depth-1" id="li-comment-'+id+'">' +
                                 '<div id="comment-'+id+'" class="comment_body contents">\n' +
-                '                    <div class="profile">  <a href="#"><img alt="'+nameValue+'" src="/static/images/akinadeaava.jpg"  srcSet="//q.qlogo.cn/g?b=qq&amp;nk=270806847&amp;s=160 2x" class="avatar avatar-50 photo" height="50" width="50"></a></div>\n' +
+                '                    <div class="profile">  <a href="#"><img alt="'+nameValue+'" src="/static/images/akinadeaava.jpg" class="avatar avatar-50 photo" height="50" width="50"></a></div>\n' +
                 '                    <section class="commeta">\n' +
                 '                        <div class="left"> <h4 class="author"><a href="#">'+nameValue+'</a></h4> </div>\n' +
                 '                        <a rel="nofollow" class="comment-reply-link" href="#" onClick="return TypechoComment.reply(&#39;comment-'+id+'&#39;, '+id+');" aria-label="回复给'+nameValue+'">回复</a>\n' +

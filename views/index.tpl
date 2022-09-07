@@ -81,7 +81,7 @@
 							<span><i class="iconfont"></i><a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'>{{$article.CommentCount}}条评论</a></span>
 						</div>
 						<div class="views">
-							<span><i class="iconfont"></i>{{$article.ViewCount}}万 热度</span>
+							<span><i class="iconfont"></i>{{$article.ViewCount}} 热度</span>
 						</div>
 					</div>
 				</footer>

@@ -15,32 +15,26 @@ var ajaxcomments = function(){
 
 	click_bind();
     /* 开始提交 */
-    $(comment_form).submit(function() {
+    $(comment_form).on('submit', function(e) {
+        e.preventDefault()
 		/* 初始化评论框 */
 		$('.comment-respond textarea').css({"border":"2px  solid #DDE6EA"});
 		$('.commenttext').css({"border":"2px  solid #DDE6EA"});
 		$("#submit").val("提交中...");
 		if($('#comment-author-info').length>0){
 			/*格式整理*/
-			var authorValue = $('#author').val().replace(/(^\s*)|(\s*$)/g, "");
-			var mailValue = $('#mail').val().replace(/(^\s*)|(\s*$)/g, "");
-			var urlValue = $('#url').val().replace(/(^\s*)|(\s*$)/g, "");
+			var nameValue = $('#name').val().replace(/(^\s*)|(\s*$)/g, "");
+			var emailValue = $('#email').val().replace(/(^\s*)|(\s*$)/g, "");
 			var textValue = $(comment_form).find(textarea).val().replace(/(^\s*)|(\s*$)/g, "");
 			/* 预检 */
 			var errorNum = 0;
-			if(authorValue == ""){
+			if(nameValue == ""){
 				errorNum++;
 				$('#author').css({"border":"2px dashed #ff6c6c"});
 			}
-			if(mailValue == ""){
+			if(emailValue == ""){
 				errorNum++;
 				$('#mail').css({"border":"2px dashed #ff6c6c"});
-			}
-			if(urlValue != ""){
-				if(urlValue.indexOf('https://') == -1 && urlValue.indexOf('http://') == -1){
-					errorNum++;
-					$('#url').css({"border":"2px dashed #ff6c6c"});
-			}
 			}
 			if(textValue == ""){
 				errorNum++;
@@ -53,10 +47,13 @@ var ajaxcomments = function(){
 				return false;
 			}
 		}
+        let formData = $(this).serializeArray()
         $.ajax({
             url: $(this).attr('action'),
-            type: $(this).attr('method'),
-            data: $(this).serializeArray(),async: true,
+            type: 'post',
+            data: formData,
+            async: true,
+            dataType:'json',
             error: function(date) {
                 $("#submit").val("提交失败");
                 let msg = $(".container", date.responseText).prevObject[7].innerHTML.replace(/\s*/g,"");
@@ -67,55 +64,61 @@ var ajaxcomments = function(){
                 return false;
             },
             success: function(data) { //成功取到数据
-                try {
-                    new_id = $(comment_list, data).html().match(/id=\"?comment-\d+/g).join().match(/\d+/g).sort(function(a, b) {
-                        return a - b
-                    }).pop(); // TODO：找新 id，如果在第二页评论的话，找到的ID是有问题的！
-
-                    if ($('.page-navigator .prev').length && parent_id == ""){
-                        new_id = '';
-						var dd=$(".prev a").attr("href");//获取上页地址
-						$(".prev a").attr("href",""); //将地址清空
-						dd=dd.replace(/comment-page-(.*?)#comments/, "comment-page-1#comments");//将获取的地址页码改为1
-						$(".prev a").attr("href",dd); //将地址放回去
-						$('.prev a').get(0).click(); //点击这个超链接
-					}//判断当前评论列表是否在第一页,并且只会在母评论时候才会生效
-
-                    //插入评论内容到当前页面
-                    if (parent_id) {
-                        data = $('#li-comment-' + new_id, data).hide(); // 取新评论
-                        if ($('#' + parent_id).find(".children").length <= 0) {
-                            $('#' + parent_id).append("<div class='children'><ol class='comment-list'></ol></div>");
-                        }
-                        if (new_id)//new_id不为空的时候才会插入
-                            $('#' + parent_id + " .children .comment-list").prepend(data);
-                        parent_id = '';
-                    } else {
-                        data = $('#li-comment-' + new_id, data).hide(); // 取新评论
-                        //console.log('该评论为母评论');
-                        if (!$(comment_list).length) //如果一条评论也没有的话
-                            $(respond).append('<ol class="comment-list"></ol>'); // 加 ol
-                        $(comment_list).prepend(data);
+                let id = data.Data
+                let h = '<ol class="comment-list">\n' +
+                    '       <li class="comment comment-even depth-1" id="li-comment-'+id+'">' +
+                                '<div id="comment-'+id+'" class="comment_body contents">\n' +
+                '                    <div class="profile">  <a href="#"><img alt="'+nameValue+'" src="/static/images/akinadeaava.jpg"  srcSet="//q.qlogo.cn/g?b=qq&amp;nk=270806847&amp;s=160 2x" class="avatar avatar-50 photo" height="50" width="50"></a></div>\n' +
+                '                    <section class="commeta">\n' +
+                '                        <div class="left"> <h4 class="author"><a href="#">'+nameValue+'</a></h4> </div>\n' +
+                '                        <a rel="nofollow" class="comment-reply-link" href="#" onClick="return TypechoComment.reply(&#39;comment-'+id+'&#39;, '+id+');" aria-label="回复给'+nameValue+'">回复</a>\n' +
+                '                        <div class="right"> <div class="info"> <time dateTime="'+getDate()+'">'+getDate()+'</time> </div> </div>\n' +
+                '                    </section>\n' +
+                '                    <div class="body"> <p>\n '+textValue + '</p> </div>\n' +
+                '                </div> ' +
+                            '</li> ' +
+                    '</ol>';
+                new_id = id
+                if ($('.page-navigator .prev').length && parent_id == ""){
+                    new_id = '';
+                    var dd=$(".prev a").attr("href");//获取上页地址
+                    $(".prev a").attr("href",""); //将地址清空
+                    dd=dd.replace(/comment-page-(.*?)#comments/, "comment-page-1#comments");//将获取的地址页码改为1
+                    $(".prev a").attr("href",dd); //将地址放回去
+                    $('.prev a').get(0).click(); //点击这个超链接
+                }//判断当前评论列表是否在第一页,并且只会在母评论时候才会生效
+                //插入评论内容到当前页面
+                if (parent_id) {
+                    h = $('#li-comment-' + new_id, h).hide(); // 取新评论
+                    if ($('#' + parent_id).find(".children").length <= 0) {
+                        $('#' + parent_id).append("<div class='children'><ol class='comment-list'></ol></div>");
                     }
-					setTimeout(function(){ $("#submit").val("提交成功"); }, 2000);
-                    $('#li-comment-' + new_id).fadeIn(); // 显示
-                    var num;
-                    $(comments).length ? (num = parseInt($(comments).text().match(/\d+/)), $(comments).html($(comments).html().replace(num, num + 1))) : 0;
-                    // 评论数加一
-                    TypechoComment.cancelReply();
-                    $(textarea).html('');$(textarea).val('');
-                    $(comment_reply + ' #cancel-comment-reply-link').unbind('click');
-                    click_bind(); // 新评论绑定
-                    if (new_id){
-                        $body.animate({scrollTop: $('#li-comment-' + new_id).offset().top - 200}, 900);
-                    }else{
-                        $body.animate({scrollTop: $('#comments').offset().top - 200}, 900);
-                    }
-					setTimeout(function(){ $("#submit").val("发表评论"); }, 3000);
-                } catch(e) {
-                    //alert('评论ajax错误!请截图并联系主题制作者！\n\n' + e);
-                    window.location.reload();
+                    if (new_id)//new_id不为空的时候才会插入
+                        $('#' + parent_id + " .children .comment-list").prepend(h);
+                    parent_id = '';
+                } else {
+                    h = $('#li-comment-' + new_id, h).hide(); // 取新评论
+                    //console.log('该评论为母评论');
+                    if (!$(comment_list).length) //如果一条评论也没有的话
+                        $(respond).append('<ol class="comment-list"></ol>'); // 加 ol
+                    $(comment_list).prepend(h);
                 }
+                setTimeout(function(){ $("#submit").val("提交成功"); }, 2000);
+                $('#li-comment-' + new_id).fadeIn(); // 显示
+                var num;
+                $(comments).length ? (num = parseInt($(comments).text().match(/\d+/)), $(comments).html($(comments).html().replace(num, num + 1))) : 0;
+                // 评论数加一
+                TypechoComment.cancelReply();
+                $(textarea).html('');$(textarea).val('');
+                $(comment_reply + ' #cancel-comment-reply-link').unbind('click');
+                click_bind(); // 新评论绑定
+                if (new_id){
+                    $body.animate({scrollTop: $('#li-comment-' + new_id).offset().top - 200}, 900);
+                }else{
+                    $body.animate({scrollTop: $('#comments').offset().top - 200}, 900);
+                }
+                setTimeout(function(){ $("#submit").val("发表评论"); }, 3000);
+                return false;
             } // end success()
         }); // end ajax()
         return false;
@@ -129,6 +132,14 @@ var ajaxcomments = function(){
         $('#cancel-comment-reply-link').click(function() { // 取消
             parent_id = '';
         });
+    }
+
+    function getDate(){
+        var mydate = new Date();
+        var str = "" + mydate.getFullYear() + "年";
+        str += (mydate.getMonth()+1) + "月";
+        str += mydate.getDate() + "日";
+        return str;
     }
 
  }
@@ -156,7 +167,9 @@ $(function(){
 		}
 
 	});
-	
+
+    if ($("#uid").val() == "") $("#toggle-comment-info").click()
+
 });
  
 //mo-nav
@@ -227,7 +240,8 @@ $('#comments-navi a').on('click', function(e){
 
 // 顶部加载条
 var loading = function(){
-	
+
+
 //preloading
 $(window).preloader({	
 		        delay: 500

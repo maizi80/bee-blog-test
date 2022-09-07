@@ -78,26 +78,26 @@
         <div id="respond_box">
             <div id="respond-post-115" class="comment-respond">
                 <div class="cancel-comment-reply">
-                    <a id="cancel-comment-reply-link" href="/Web/userAkina.html#respond-post-115" rel="nofollow" style="display:none" onclick="return TypechoComment.cancelReply();">取消回复</a>
+                    <a id="cancel-comment-reply-link" href="#" rel="nofollow" style="display:none" onclick="return TypechoComment.cancelReply();">取消回复</a>
                 </div>
                 <!-- 输入表单开始 -->
-                <form action="/Web/userAkina.html/comment" method="post" id="commentform">
+                <form action='{{urlfor "CommentController.Post" ":aid" .article.Id}}' id="commentform">
+                    <input type="hidden" name="uid" id="uid" value="">
                     <!-- 如果当前用户已经登录 -->
                     <div class="author-updown">Welcome back ,&nbsp;&nbsp;<a id="toggle-comment-info">[ 修改 ] ↓</a></div>
                     <div id="comment-author-info">
-                        <input type="text" name="author" id="author" class="commenttext" placeholder="Name" value="" size="22" tabindex="1">
-                        <label for="author"></label>
-                        <input type="text" name="mail" id="mail" class="commenttext" value="" size="22" placeholder="Email" tabindex="2">
-                        <label for="mail"></label>
-                        <input type="text" name="url" id="url" class="commenttext" value="" size="22" placeholder="http://" tabindex="3">
-                        <label for="url"></label>
+                        <input type="text" name="email" id="email" class="commenttext" placeholder="Email" value="" size="22" tabindex="1">
+                        <label for="email"></label>
+                        <input type="text" name="name" id="name" class="commenttext" value="" size="18" placeholder="Name" tabindex="3">
+                        <label for="name"></label>
                     </div>
                     <div class="clear"></div>
-                    <p><textarea name="text" id="comment" class="OwO-textarea" placeholder="come on baby !" tabindex="4" cols="50" rows="5"></textarea></p>
+
+                    <p><textarea name="content" id="comment" class="OwO-textarea" placeholder="come on baby !" tabindex="4" cols="50" rows="5"></textarea></p>
                     <div class="com-footer">
                         <input class="submit" name="submit" type="submit" id="submit" tabindex="5" value="发表评论">
-                        <input type="hidden" name="comment_post_ID" value="58" id="comment_post_ID">
-                        <input type="hidden" name="comment_parent" id="comment_parent" value="0">
+                        <input type="hidden" name="comment_post_ID" value="{{.article.Id}}" id="comment_post_ID">
+                        <input type="hidden" name="comment_parent" id="comment_parent" value="{{.article.Id}}">
                         <!--表情-->
                         <div class="OwO">
                             <div class="OwO-logo"><span>OωO表情</span></div>

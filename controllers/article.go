@@ -3,6 +3,7 @@ package controllers
 import (
 	"bee-blog/models"
 	"bee-blog/services"
+	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"strconv"
@@ -33,7 +34,12 @@ func (a *ArticleController) Get() {
 	// 下一篇
 	var next models.Article
 	qs.Filter("id__gt", uint(aid)).OrderBy("id").Limit(1).One(&next)
-
+	a.SetSession("uid", 1)
+	a.SetSession("username", "test")
+	// 获取session
+	uid := a.GetSession("uid")
+	username := a.GetSession("username")
+	fmt.Println(uid)
 	// 评论列表
 	commons := services.GetComments(int(aid))
 	a.Data["article"] = article
@@ -41,6 +47,8 @@ func (a *ArticleController) Get() {
 	a.Data["pre"] = pre
 	a.Data["next"] = next
 	a.Data["commons"] = commons
+	a.Data["uid"] = uid
+	a.Data["username"] = username
 	a.LayoutSections = make(map[string]string)
 	a.LayoutSections["Scripts"] = "a_js.tpl"
 	a.LayoutSections["HtmlHead"] = "a_head.tpl"

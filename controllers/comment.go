@@ -6,7 +6,6 @@ import (
 	"bee-blog/validations"
 	"github.com/beego/beego/v2/client/orm"
 	beego "github.com/beego/beego/v2/server/web"
-	"github.com/prometheus/common/log"
 )
 
 type CommentController struct {
@@ -14,6 +13,7 @@ type CommentController struct {
 }
 
 func (c *CommentController) Post() {
+
 	pid, _ := c.GetInt("comment_parent", 0)
 	parent, _ := c.GetInt("parent", 0)
 	if parent != 0 {
@@ -36,10 +36,13 @@ func (c *CommentController) Post() {
 			Name:  d.Name,
 			Email: d.Email,
 		}
-		_, e := orm.NewOrm().Insert(&u)
+		uid, e := orm.NewOrm().Insert(&u)
 		if e != nil {
-			log.Error("insert user err:" + e.Error())
+			commons.Fail(c.Ctx, "添加失败", nil, "")
 		}
+		// 设置 session
+		c.SetSession("uid", uid)
+		c.SetSession("username", d.Name)
 	}
 
 	co := models.Comment{
@@ -52,6 +55,9 @@ func (c *CommentController) Post() {
 	if err != nil {
 		commons.Fail(c.Ctx, "添加失败", nil, "")
 	}
-	
+	// 评论数量+1
+	orm.NewOrm().QueryTable("article").Filter("id", uint(aid)).Update(orm.Params{
+		"comment_count": orm.ColValue(orm.ColAdd, 1),
+	})
 	commons.Success(c.Ctx, insert, "添加成功", "")
 }

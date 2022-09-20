@@ -101,3 +101,17 @@ body {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
+
+.btn-add{
+  margin: 1.5em 0;
+}
+
+.fp-4 {
+  padding: 1.5em 0;
+}
+
+
+.btn-min {
+  font-size: 0.5rem;
+  line-height: 1;
+}

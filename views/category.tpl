@@ -1,6 +1,6 @@
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 
-    <h2><a href="/category">添加</a></h2>
+    <a class="btn btn-primary btn-add" href="/category/add" role="button">添加</a>
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <thead>
@@ -19,7 +19,12 @@
                 <td>{{$category.Alias}}</td>
                 <td>{{$category.Name}}</td>
                 <td>{{$category.Sort}}</td>
-                <td>编辑|删除</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a role="button" class="btn btn-primary btn-min" href="/category/{{$category.Id}}" >编辑</a>
+                        <a role="button" class="btn btn-danger btn-min" href="/category/delete/{{$category.Id}}" >删除</a>
+                    </div>
+                </td>
             </tr>
             {{end}}
             </tbody>

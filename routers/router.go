@@ -12,4 +12,6 @@ func init() {
 	beego.Router("/login", &controllers.LoginController{})
 	beego.Router("/admin", &controllers.AdminController{})
 	beego.Router("/category", &controllers.CategoryController{})
+	beego.Router("/category/add", &controllers.CategoryController{}, "get:Create")
+	beego.Router("/category/:cid", &controllers.CategoryController{}, "get:Edit")
 }

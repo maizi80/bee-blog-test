@@ -1,0 +1,1 @@
+\bee-blog/views/category/edit.tpl

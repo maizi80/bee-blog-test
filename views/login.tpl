@@ -29,13 +29,13 @@
     <link href="/static/css/signin.css" rel="stylesheet">
 </head>
 <body class="text-center">
-
-<form class="form-signin">
+<div class="alert alert-danger" role="alert" style="position: absolute; left: 46%; top: 25%; display:none">登录成功</div>
+<form class="form-signin" action="/login" method="post" id="login">
     <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
     <label for="inputUsername" class="sr-only">用户名</label>
-    <input type="username" id="inputUsername" class="form-control" placeholder="用户名" required autofocus>
+    <input type="text" name="username" id="inputUsername" class="form-control" placeholder="用户名" required autofocus>
     <label for="inputPassword" class="sr-only">密码</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
+    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="密码" required>
     <div class="checkbox mb-3">
         <label>
             <input type="checkbox" value="remember-me"> 记住我
@@ -44,5 +44,54 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2022-2022</p>
 </form>
+<script src="/static/js/jquery.min.js" crossorigin="anonymous"></script>
+<script>
+    $(".btn").on("click", function () {
+        $.ajax({
+            type: "POST",
+            url: $('#login').attr('action'),
+            data: $('#login').serialize(),
+            success: function (data){
+                if (data.Code === 200){
+                    showTips('success')
+                } else {
+                    showTips('error')
+                }
+                $(".alert").html(data.Msg)
+
+                console.log(data)
+            },
+            error: function (res){
+                $(".alert").html(res.statusText)
+                showTips('error')
+            }
+        })
+        return false
+    })
+
+    function showTips(type) {
+        $(".alert").css("display", "block")
+        if (type === 'success'){
+            $(".alert").addClass("alert-success")
+            $(".alert").removeClass("alert-danger")
+            interval('success')
+        } else {
+            interval('error')
+        }
+
+    }
+
+    function interval(type) {
+        let sec = 3
+        if (type === 'success') sec = 1
+        var interval = setInterval(function(){
+            if (type === 'success') {
+                window.location.href = "/admin";
+            }
+            $(".alert").css("display", "none")
+            clearInterval(interval);
+        }, sec*1000);
+    }
+</script>
 </body>
 </html>

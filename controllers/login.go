@@ -3,7 +3,6 @@ package controllers
 import (
 	"bee-blog/commons"
 	"bee-blog/services"
-	"fmt"
 	beego "github.com/beego/beego/v2/server/web"
 )
 
@@ -13,7 +12,6 @@ type LoginController struct {
 
 func (c *LoginController) Get() {
 	uid := c.GetSession("uid")
-	fmt.Println(uid)
 	if uid != nil {
 		c.Redirect("/admin", 302)
 	}
@@ -37,7 +35,6 @@ func (c *LoginController) Post() {
 	// 保存session
 	c.SetSession("uid", uid)
 	c.SetSession("username", username)
-	fmt.Println(c.GetSession("uid"), c.GetSession("username"))
 	// 响应
 	commons.Success(c.Ctx, username, "登录成功", "")
 }

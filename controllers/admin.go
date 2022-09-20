@@ -1,11 +1,10 @@
 package controllers
 
-import beego "github.com/beego/beego/v2/server/web"
-
 type AdminController struct {
-	beego.Controller
+	BaseController
 }
 
 func (c *AdminController) Get() {
+	c.Layout = "admin_layout.tpl"
 	c.TplName = "admin.tpl"
 }

@@ -58,6 +58,17 @@
 </div>
 <script src="/static/js/jquery.min.js" crossorigin="anonymous"></script>
 <script src="/static/js/bootstrap.bundle.min.js"></script>
-
+<script>
+    let pathname = window.location.pathname
+    pathnames = pathname.split('/')[1]
+    let href = '/'+pathnames
+    let navLinks = $(".nav-link")
+    $.each(navLinks, function(i, item){
+        $(item).removeClass("active")
+        if (item.attributes.href.value === href){
+            $(item).addClass("active")
+        }
+    });
+</script>
 </body>
 </html>

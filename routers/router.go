@@ -16,5 +16,6 @@ func init() {
 	beego.Router("/category/:cid", &controllers.CategoryController{}, "get:Edit;put:Put;delete:Delete")
 	beego.Router("/tag", &controllers.TagController{}, "get:GetAll;post:Post")
 	beego.Router("/tag/add", &controllers.TagController{}, "get:Create")
+	beego.Router("/tag/:tid", &controllers.TagController{}, "get:Edit;put:Put")
 
 }

@@ -3,7 +3,6 @@ package controllers
 import (
 	"bee-blog/commons"
 	"bee-blog/models"
-	"encoding/json"
 	"github.com/beego/beego/v2/client/orm"
 	"strconv"
 )
@@ -87,25 +86,63 @@ func (c *TagController) GetAll() {
 	c.TplName = "tag/index.tpl"
 }
 
+func (c *TagController) Edit() {
+	tid := c.Ctx.Input.Param(":tid")
+	tidInt, _ := strconv.ParseInt(tid, 0, 64)
+	// 验证数据
+	if tidInt == 0 {
+		commons.Fail(c.Ctx, "ID不能为空", "", "")
+	}
+	o := orm.NewOrm()
+	tag := models.Tag{Id: tidInt}
+	err := o.Read(&tag)
+	if err == orm.ErrNoRows {
+		c.Abort("404")
+	}
+	c.Data["tag"] = tag
+	c.Layout = "admin_layout.tpl"
+	c.TplName = "tag/edit.tpl"
+}
+
 // Put ...
 // @Title Put
 // @Description update the Tag
-// @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.Tag	true		"body for Tag content"
-// @Success 200 {object} models.Tag
-// @Failure 403 :id is not int
-// @router /:id [put]
 func (c *TagController) Put() {
-	idStr := c.Ctx.Input.Param(":id")
-	id, _ := strconv.ParseInt(idStr, 0, 64)
-	v := models.Tag{Id: id}
-	json.Unmarshal(c.Ctx.Input.RequestBody, &v)
-	if err := models.UpdateTagById(&v); err == nil {
-		c.Data["json"] = "OK"
-	} else {
-		c.Data["json"] = err.Error()
+	tid := c.Ctx.Input.Param(":tid")
+	tidInt, _ := strconv.ParseInt(tid, 0, 64)
+	alias := c.GetString("alias")
+	name := c.GetString("name")
+	sort := c.GetString("sort")
+	// 验证数据
+	if tidInt == 0 {
+		commons.Fail(c.Ctx, "ID不能为空", "", "")
 	}
-	c.ServeJSON()
+	if alias == "" {
+		commons.Fail(c.Ctx, "别名不能为空", "", "")
+	}
+	if name == "" {
+		commons.Fail(c.Ctx, "名字不能为空", "", "")
+	}
+	sortInt, _ := strconv.Atoi(sort)
+	// 保存数据
+	o := orm.NewOrm()
+	err := o.Read(&models.Tag{Id: tidInt})
+	if err == orm.ErrNoRows {
+		commons.Fail(c.Ctx, "数据错误", nil, "")
+	}
+
+	// 保存数据
+	tag := models.Tag{
+		Id:    tidInt,
+		Alias: alias,
+		Name:  name,
+		Sort:  sortInt,
+	}
+	num, err := o.Update(&tag)
+	if err != nil {
+		commons.Fail(c.Ctx, "更新失败", nil, "")
+	}
+	commons.Success(c.Ctx, num, "更新成功", "")
 }
 
 // Delete ...

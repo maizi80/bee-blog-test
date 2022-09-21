@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bee-blog/commons"
 	"bee-blog/models"
 	"encoding/json"
 	"github.com/beego/beego/v2/client/orm"
@@ -21,23 +22,39 @@ func (c *TagController) URLMapping() {
 	c.Mapping("Delete", c.Delete)
 }
 
+func (c *TagController) Create() {
+	c.Layout = "admin_layout.tpl"
+	c.TplName = "tag/create.tpl"
+}
+
 // Post ...
 // @Title Post
 // @Description create Tag
-// @Param	body		body 	models.Tag	true		"body for Tag content"
-// @Success 201 {int} models.Tag
-// @Failure 403 body is empty
-// @router / [post]
 func (c *TagController) Post() {
-	var v models.Tag
-	json.Unmarshal(c.Ctx.Input.RequestBody, &v)
-	if _, err := models.AddTag(&v); err == nil {
-		c.Ctx.Output.SetStatus(201)
-		c.Data["json"] = v
-	} else {
-		c.Data["json"] = err.Error()
+	// 接收数据
+	alias := c.GetString("alias")
+	name := c.GetString("name")
+	sort := c.GetString("sort")
+	// 验证数据
+	if alias == "" {
+		commons.Fail(c.Ctx, "别名不能为空", "", "")
 	}
-	c.ServeJSON()
+	if name == "" {
+		commons.Fail(c.Ctx, "名字不能为空", "", "")
+	}
+	sortInt, _ := strconv.Atoi(sort)
+	// 保存数据
+	tag := models.Tag{
+		Alias: alias,
+		Name:  name,
+		Sort:  sortInt,
+	}
+	insert, err := orm.NewOrm().Insert(&tag)
+	if err != nil {
+		commons.Fail(c.Ctx, "添加失败", nil, "")
+	}
+	// 响应
+	commons.Success(c.Ctx, insert, "添加成功", "")
 }
 
 // GetOne ...
@@ -62,15 +79,6 @@ func (c *TagController) GetOne() {
 // GetAll ...
 // @Title Get All
 // @Description get Tag
-// @Param	query	query	string	false	"Filter. e.g. col1:v1,col2:v2 ..."
-// @Param	fields	query	string	false	"Fields returned. e.g. col1,col2 ..."
-// @Param	sortby	query	string	false	"Sorted-by fields. e.g. col1,col2 ..."
-// @Param	order	query	string	false	"Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc ..."
-// @Param	limit	query	string	false	"Limit the size of result set. Must be an integer"
-// @Param	offset	query	string	false	"Start position of result set. Must be an integer"
-// @Success 200 {object} models.Tag
-// @Failure 403
-// @router / [get]
 func (c *TagController) GetAll() {
 	var tags []models.Tag
 	orm.NewOrm().QueryTable(new(models.Tag)).All(&tags)

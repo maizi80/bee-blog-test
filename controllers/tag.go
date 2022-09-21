@@ -15,7 +15,6 @@ type TagController struct {
 // URLMapping ...
 func (c *TagController) URLMapping() {
 	c.Mapping("Post", c.Post)
-	c.Mapping("GetOne", c.GetOne)
 	c.Mapping("GetAll", c.GetAll)
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
@@ -54,25 +53,6 @@ func (c *TagController) Post() {
 	}
 	// 响应
 	commons.Success(c.Ctx, insert, "添加成功", "")
-}
-
-// GetOne ...
-// @Title Get One
-// @Description get Tag by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Tag
-// @Failure 403 :id is empty
-// @router /:id [get]
-func (c *TagController) GetOne() {
-	idStr := c.Ctx.Input.Param(":id")
-	id, _ := strconv.ParseInt(idStr, 0, 64)
-	v, err := models.GetTagById(id)
-	if err != nil {
-		c.Data["json"] = err.Error()
-	} else {
-		c.Data["json"] = v
-	}
-	c.ServeJSON()
 }
 
 // GetAll ...

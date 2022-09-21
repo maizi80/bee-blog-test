@@ -22,7 +22,7 @@ func Success(c *context.Context, data interface{}, message string, url string) {
 }
 
 func Result(c *context.Context, code int, data interface{}, msg string, url string) {
-	if c.Input.IsPost() {
+	if c.Input.IsPost() || c.Input.IsPut() || c.Input.IsDelete() {
 		result := Response{
 			Code: code,
 			Msg:  msg,

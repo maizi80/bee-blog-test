@@ -54,6 +54,44 @@ func (c *CategoryController) Post() {
 }
 
 func (c *CategoryController) Edit() {
+	cid := c.Ctx.Input.Param(":cid")
+	cidInt, _ := strconv.Atoi(cid)
+	o := orm.NewOrm()
+	category := models.Category{Id: uint(cidInt)}
+	err := o.Read(&category)
+	if err == orm.ErrNoRows {
+		c.Abort("404")
+	}
+	c.Data["category"] = category
 	c.Layout = "admin_layout.tpl"
 	c.TplName = "category/edit.tpl"
+}
+
+func (c *CategoryController) Put() {
+	cid := c.Ctx.Input.Param(":cid")
+	cidInt, _ := strconv.Atoi(cid)
+	alias := c.GetString("alias")
+	name := c.GetString("name")
+	sort := c.GetString("sort")
+	// 验证数据
+	if alias == "" {
+		commons.Fail(c.Ctx, "别名不能为空", "", "")
+	}
+	if name == "" {
+		commons.Fail(c.Ctx, "名字不能为空", "", "")
+	}
+	sortInt, _ := strconv.Atoi(sort)
+	// 保存数据
+	cat := models.Category{
+		Id:    uint(cidInt),
+		Alias: alias,
+		Name:  name,
+		Sort:  uint(sortInt),
+	}
+	num, err := orm.NewOrm().Update(&cat)
+	if err != nil {
+		commons.Fail(c.Ctx, "更新失败", nil, "")
+	}
+	fmt.Println(num, cat)
+	commons.Success(c.Ctx, num, "更新成功", "")
 }

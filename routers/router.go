@@ -13,5 +13,5 @@ func init() {
 	beego.Router("/admin", &controllers.AdminController{})
 	beego.Router("/category", &controllers.CategoryController{})
 	beego.Router("/category/add", &controllers.CategoryController{}, "get:Create")
-	beego.Router("/category/:cid", &controllers.CategoryController{}, "get:Edit;put:Put")
+	beego.Router("/category/:cid", &controllers.CategoryController{}, "get:Edit;put:Put;delete:Delete")
 }

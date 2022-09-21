@@ -56,6 +56,10 @@ func (c *CategoryController) Post() {
 func (c *CategoryController) Edit() {
 	cid := c.Ctx.Input.Param(":cid")
 	cidInt, _ := strconv.Atoi(cid)
+	// 验证数据
+	if cidInt == 0 {
+		commons.Fail(c.Ctx, "ID不能为空", "", "")
+	}
 	o := orm.NewOrm()
 	category := models.Category{Id: uint(cidInt)}
 	err := o.Read(&category)
@@ -74,6 +78,10 @@ func (c *CategoryController) Put() {
 	name := c.GetString("name")
 	sort := c.GetString("sort")
 	// 验证数据
+	if cidInt == 0 {
+		commons.Fail(c.Ctx, "ID不能为空", "", "")
+	}
+	// 验证数据
 	if alias == "" {
 		commons.Fail(c.Ctx, "别名不能为空", "", "")
 	}
@@ -81,6 +89,12 @@ func (c *CategoryController) Put() {
 		commons.Fail(c.Ctx, "名字不能为空", "", "")
 	}
 	sortInt, _ := strconv.Atoi(sort)
+	o := orm.NewOrm()
+	err := o.Read(&models.Category{Id: uint(cidInt)})
+	if err == orm.ErrNoRows {
+		commons.Fail(c.Ctx, "数据错误", nil, "")
+	}
+
 	// 保存数据
 	cat := models.Category{
 		Id:    uint(cidInt),
@@ -88,10 +102,30 @@ func (c *CategoryController) Put() {
 		Name:  name,
 		Sort:  uint(sortInt),
 	}
-	num, err := orm.NewOrm().Update(&cat)
+	num, err := o.Update(&cat)
 	if err != nil {
 		commons.Fail(c.Ctx, "更新失败", nil, "")
 	}
-	fmt.Println(num, cat)
 	commons.Success(c.Ctx, num, "更新成功", "")
+}
+
+func (c *CategoryController) Delete() {
+	cid := c.Ctx.Input.Param(":cid")
+	cidInt, _ := strconv.Atoi(cid)
+	// 验证数据
+	if cidInt == 0 {
+		commons.Fail(c.Ctx, "ID不能为空", "", "")
+	}
+	cat := models.Category{Id: uint(cidInt)}
+	o := orm.NewOrm()
+	err := o.Read(&cat)
+	if err == orm.ErrNoRows {
+		commons.Fail(c.Ctx, "数据错误", nil, "")
+	}
+	num, err := o.Delete(&cat)
+	if err != nil {
+		commons.Fail(c.Ctx, "删除失败", nil, "")
+	}
+	fmt.Println(cidInt, num)
+	commons.Success(c.Ctx, num, "删除成功", "")
 }

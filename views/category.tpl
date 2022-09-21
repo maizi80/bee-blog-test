@@ -22,7 +22,7 @@
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <a role="button" class="btn btn-primary btn-min" href="/category/{{$category.Id}}" >编辑</a>
-                        <a role="button" class="btn btn-danger btn-min" href="/category/delete/{{$category.Id}}" >删除</a>
+                        <a role="button" class="btn btn-danger btn-min" onclick="delRow(this)" url="/category/{{$category.Id}}" >删除</a>
                     </div>
                 </td>
             </tr>

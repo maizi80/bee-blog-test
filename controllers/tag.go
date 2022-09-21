@@ -148,17 +148,22 @@ func (c *TagController) Put() {
 // Delete ...
 // @Title Delete
 // @Description delete the Tag
-// @Param	id		path 	string	true		"The id you want to delete"
-// @Success 200 {string} delete success!
-// @Failure 403 id is empty
-// @router /:id [delete]
 func (c *TagController) Delete() {
-	idStr := c.Ctx.Input.Param(":id")
-	id, _ := strconv.ParseInt(idStr, 0, 64)
-	if err := models.DeleteTag(id); err == nil {
-		c.Data["json"] = "OK"
-	} else {
-		c.Data["json"] = err.Error()
+	tid := c.Ctx.Input.Param(":tid")
+	tidInt, _ := strconv.ParseInt(tid, 0, 64)
+	// 验证数据
+	if tidInt == 0 {
+		commons.Fail(c.Ctx, "ID不能为空", "", "")
 	}
-	c.ServeJSON()
+	tag := models.Tag{Id: tidInt}
+	o := orm.NewOrm()
+	err := o.Read(&tag)
+	if err == orm.ErrNoRows {
+		commons.Fail(c.Ctx, "数据错误", nil, "")
+	}
+	num, err := o.Delete(&tag)
+	if err != nil {
+		commons.Fail(c.Ctx, "删除失败", nil, "")
+	}
+	commons.Success(c.Ctx, num, "删除成功", "")
 }

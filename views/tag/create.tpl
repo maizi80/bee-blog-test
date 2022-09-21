@@ -1,0 +1,1 @@
+E:\gopath\src\github.com\bee-blog/views/tage/create.tpl

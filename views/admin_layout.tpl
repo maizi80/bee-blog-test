@@ -47,7 +47,7 @@
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link active" href="/admin"><span data-feather="home"></span>文章管理 </a></li>
                     <li class="nav-item"><a class="nav-link" href="/category"><span data-feather="home"></span>文章分类管理 </a></li>
-                    <li class="nav-item"><a class="nav-link" href="/tags"><span data-feather="home"></span>文章标签管理 </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tag"><span data-feather="home"></span>文章标签管理 </a></li>
                     <li class="nav-item"><a class="nav-link" href="/profile"><span data-feather="file"></span>个人信息</a></li>
                 </ul>
             </div>

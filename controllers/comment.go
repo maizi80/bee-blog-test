@@ -21,7 +21,7 @@ func (c *CommentController) Post() {
 	}
 	aid, _ := c.GetInt("comment_post_ID", 0)
 	uid, _ := c.GetInt("uid", 0)
-	d := validations.CommentValida{
+	d := validations.CommentValidate{
 		Name:    c.GetString("name"),
 		Email:   c.GetString("email"),
 		Content: c.GetString("content"),

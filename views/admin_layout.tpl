@@ -25,6 +25,7 @@
     </style>
     <!-- Custom styles for this template -->
     <link href="/static/css/dashboard.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-fileinput.css" media="all" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div class="alert alert-danger" role="alert" style="position: absolute; left: 50%; top: 1%; z-index:1040; display:none"></div>
@@ -58,6 +59,7 @@
 </div>
 <script src="/static/js/jquery.min.js" crossorigin="anonymous"></script>
 <script src="/static/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/bootstrap-fileinput.js"></script>
 <script src="/static/js/common.js"></script>
 <script>
     let pathname = window.location.pathname

@@ -1,6 +1,6 @@
 package validations
 
-type CommentValida struct {
+type CommentValidate struct {
 	Name    string `valid:"Required;"`
 	Email   string `valid:"Required;Email;"`
 	Content string `valid:"Required;"`

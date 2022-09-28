@@ -34,10 +34,10 @@ function delRow(obj) {
             success: function (data){
                 if (data.Code === 200){
                     showTips('success')
-                    delInterval('success')
+                    refreshInterval('success')
                 } else {
                     showTips('error')
-                    delInterval('error', obj)
+                    refreshInterval('error', obj)
                 }
                 $(".alert").html(data.Msg)
 
@@ -45,7 +45,7 @@ function delRow(obj) {
             error: function (res){
                 $(".alert").html(res.statusText)
                 showTips('error')
-                delInterval('error', obj)
+                refreshInterval('error', obj)
             }
         })
     }
@@ -73,7 +73,7 @@ function interval(type) {
     }, sec*1000);
 }
 
-function delInterval(type, obj) {
+function refreshInterval(type, obj) {
     let sec = 3
     if (type === 'success') sec = 1
     var interval = setInterval(function(){

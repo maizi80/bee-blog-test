@@ -12,7 +12,7 @@ type User struct {
 	Email     string    `orm:"column(email);size(30);" description:"邮箱"`
 	Code      string    `orm:"column(code);size(10);" description:"验证码"`
 	Avatar    string    `orm:"column(avatar);size(255)" description:"头像"`
-	CreatedAt time.Time `orm:"column(created_at);type(datetime);auto_now" description:"添加时间"`
+	CreatedAt time.Time `orm:"column(created_at);type(datetime);auto_now_add" description:"添加时间"`
 }
 
 func init() {

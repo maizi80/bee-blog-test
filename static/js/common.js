@@ -48,6 +48,7 @@ $(".btn-profile").on("click", function () {
                 refreshInterval('error')
             }
             $(".alert").html(data.Msg)
+
         },
         error: function (res){
             $(".alert").html(res.statusText)
@@ -57,6 +58,41 @@ $(".btn-profile").on("click", function () {
     })
     return false
 })
+
+$(".btn-article").on("click", function () {
+    let formData = new FormData();
+    let arr = $('#post-form').serializeArray()
+    for (let i=0; i<arr.length; i++){
+        formData.append(arr[i].name, arr[i].value)
+    }
+    formData.append('image',$('#picID')[0].files[0]);
+    $.ajax({
+        type: $('#post-form').attr('method'),
+        url: $('#post-form').attr('action'),
+        processData: false,
+        data: formData,
+        contentType: false,
+        cache: false,
+        success: function (data){
+            if (data.Code === 200){
+                showTips('success')
+                interval('success')
+            } else {
+                showTips('error')
+                interval('error')
+            }
+            $(".alert").html(data.Msg)
+
+        },
+        error: function (res){
+            $(".alert").html(res.statusText)
+            showTips('error')
+            interval('error')
+        }
+    })
+    return false
+})
+
 
 function delRow(obj) {
     $(obj).attr("disabled", true).css("pointer-events","none");

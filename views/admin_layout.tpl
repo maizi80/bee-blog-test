@@ -7,6 +7,7 @@
     <title>后台首页-Bee-Blog</title>
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/editormd/css/editormd.min.css" />
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -60,6 +61,9 @@
 <script src="/static/js/jquery.min.js" crossorigin="anonymous"></script>
 <script src="/static/js/bootstrap.bundle.min.js"></script>
 <script src="/static/js/bootstrap-fileinput.js"></script>
+
+<script src="/static/editormd/js/editormd.min.js"></script>
+
 <script src="/static/js/common.js"></script>
 <script>
     let pathname = window.location.pathname
@@ -71,6 +75,14 @@
         if (item.attributes.href.value === href){
             $(item).addClass("active")
         }
+    });
+    $(function() {
+        var editor = editormd("test-editor", {
+            width: "100%",
+            height: 640,
+            markdown : "",
+            path   : "/static/editormd/lib/",
+        });
     });
 </script>
 </body>

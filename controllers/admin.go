@@ -140,3 +140,23 @@ func (c *AdminController) Put() {
 	}
 	commons.Success(c.Ctx, num, "更新成功", "")
 }
+
+func (c *AdminController) Delete() {
+	aid := c.Ctx.Input.Param(":aid")
+	aidInt, _ := strconv.Atoi(aid)
+	// 验证数据
+	if aidInt == 0 {
+		commons.Fail(c.Ctx, "ID不能为空", "", "")
+	}
+	a := models.Article{Id: uint(aidInt)}
+	o := orm.NewOrm()
+	err := o.Read(&a)
+	if err == orm.ErrNoRows {
+		commons.Fail(c.Ctx, "数据错误", nil, "")
+	}
+	num, err := o.Delete(&a)
+	if err != nil {
+		commons.Fail(c.Ctx, "删除失败", nil, "")
+	}
+	commons.Success(c.Ctx, num, "删除成功", "")
+}

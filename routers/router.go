@@ -19,5 +19,5 @@ func init() {
 	beego.Router("/tag/:tid", &controllers.TagController{}, "get:Edit;put:Put;delete:Delete")
 	beego.Router("/profile", &controllers.ProfileController{})
 	beego.Router("/admin/add", &controllers.AdminController{}, "get:Create")
-	beego.Router("/admin/:aid", &controllers.AdminController{}, "get:Edit;put:Put")
+	beego.Router("/admin/:aid", &controllers.AdminController{}, "get:Edit;put:Put;delete:Delete")
 }

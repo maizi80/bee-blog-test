@@ -122,6 +122,34 @@ function delRow(obj) {
     return false
 }
 
+function modify(obj) {
+    $(obj).attr("disabled", true).css("pointer-events","none");
+    if (window.confirm("修改该数据状态，是否继续？") === true){
+        console.log($(obj).attr("url"))
+        $.ajax({
+            type: 'put',
+            url: $(obj).attr("url"),
+            success: function (data){
+                if (data.Code === 200){
+                    showTips('success')
+                    refreshInterval('success')
+                } else {
+                    showTips('error')
+                    refreshInterval('error', obj)
+                }
+                $(".alert").html(data.Msg)
+
+            },
+            error: function (res){
+                $(".alert").html(res.statusText)
+                showTips('error')
+                refreshInterval('error', obj)
+            }
+        })
+    }
+    return false
+}
+
 function showTips(type) {
     $(".alert").css("display", "block")
     if (type === 'success'){

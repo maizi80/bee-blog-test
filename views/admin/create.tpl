@@ -59,10 +59,7 @@
             <label class="col-sm-1 col-form-label">内容</label>
             <div class="col-sm-10">
                 <div id="test-editor">
-                    <textarea style="display:none;" name="content">
-                        ### 关于 Editor.md
-                        **Editor.md** 是一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。
-                    </textarea>
+                    <textarea style="display:none;" name="content"></textarea>
                 </div>
             </div>
         </div>

@@ -34,7 +34,7 @@
                 <select class="custom-select col-sm-6" name="category_id">
                     <option selected disabled value="0">请选择分类</option>
                     {{range $key,$c := .categorys}}
-                    <option value="{{$c.Id}}" {{if eq $.a.CategoryId $c.Id }} selected {{end}}>{{$c.Name}}</option>
+                    <option value="{{$c.Id}}" {{if eq $.a.Category.Id $c.Id }} selected {{end}}>{{$c.Name}}</option>
                     {{end}}
                 </select>
             </div>

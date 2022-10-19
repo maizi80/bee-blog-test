@@ -29,8 +29,9 @@
     <link href="/static/css/bootstrap-fileinput.css" media="all" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<div class="alert alert-danger" role="alert" style="position: absolute; left: 50%; top: 1%; z-index:1040; display:none"></div>
+
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <div class="alert alert-danger" role="alert" style="position: absolute; left: 50%; top: 25%; z-index:1040; display:none"></div>
     <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/admin">Bee-Blog</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -79,7 +80,7 @@
     $(function() {
         var editor = editormd("test-editor", {
             width: "100%",
-            height: 640,
+            height: 480,
             markdown : "",
             path   : "/static/editormd/lib/",
         });

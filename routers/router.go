@@ -20,4 +20,5 @@ func init() {
 	beego.Router("/profile", &controllers.ProfileController{})
 	beego.Router("/admin/add", &controllers.AdminController{}, "get:Create")
 	beego.Router("/admin/:aid", &controllers.AdminController{}, "get:Edit;put:Put;delete:Delete")
+	beego.Router("/admin/:aid/:type/:status", &controllers.AdminController{}, "put:ChangeStatus")
 }

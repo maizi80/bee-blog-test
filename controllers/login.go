@@ -38,3 +38,10 @@ func (c *LoginController) Post() {
 	// 响应
 	commons.Success(c.Ctx, username, "登录成功", "")
 }
+
+func (c *LoginController) Logout() {
+	// 删除session
+	c.DelSession("uid")
+	c.DelSession("username")
+	c.Redirect("/login", 302)
+}

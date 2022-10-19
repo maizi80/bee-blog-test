@@ -12,7 +12,7 @@ type BaseController struct {
 func (c *BaseController) Prepare() {
 	uid := c.GetSession("uid")
 	if uid == nil {
-		//c.Redirect("/login", 302)
+		c.Redirect("/login", 302)
 	}
 }
 

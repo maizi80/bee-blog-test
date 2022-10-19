@@ -5,7 +5,6 @@ import (
 	"bee-blog/models"
 	"bee-blog/util"
 	"bee-blog/validations"
-	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	"strconv"
 	"time"
@@ -43,7 +42,6 @@ func (c *AdminController) Create() {
 func (c *AdminController) Post() {
 	cid, _ := c.GetInt("category_id", 0)
 	f, h, err := c.GetFile("image")
-	fmt.Println(err, h)
 	image := ""
 	if err == nil {
 		image = "static/upload/" + h.Filename
@@ -108,7 +106,6 @@ func (c *AdminController) Put() {
 	aidInt, _ := strconv.Atoi(aid)
 	cid, _ := c.GetInt("category_id", 0)
 	f, h, err := c.GetFile("image")
-	fmt.Println(err, h.Filename)
 	image := c.GetString("img")
 	if err != nil {
 		image = c.GetString("img")

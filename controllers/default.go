@@ -10,12 +10,10 @@ type MainController struct {
 	beego.Controller
 }
 
-func (c *MainController) Get() {
-	var articles []models.Article
-	o := orm.NewOrm().QueryTable(new(models.Article))
-	o.Limit(3).All(&articles)
-	c.Data["articles"] = articles
-	c.Data["Title"] = "首页"
-	c.Layout = "layout.tpl"
-	c.TplName = "index.tpl"
+func (c *MainController) Prepare() {
+	var categorys []models.Category
+	o := orm.NewOrm()
+	o.QueryTable(new(models.Category)).All(&categorys)
+	c.Data["categorys"] = categorys
+
 }

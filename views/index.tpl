@@ -11,25 +11,19 @@
 			<div class="focusinfo">
 				<!-- 头像 -->
 				<div class="header-tou">
-					<a href="/"><img src="/static/images/tx20110211.png"></a>
+					<a href="/"><img src="/{{index .p.avatar}}"></a>
 				</div>
 				<!-- 简介 -->
 				<div class="header-info">
-					<p>Learning, recording, growth and life</p>
+					<p>{{index .p "motto_e"}}</p>
 				</div>
 				<!-- 社交信息 -->
 				<ul class="top-social">
 					<li class="qq">
 						<a href="#"><img src="/static/images/qq.png"></a>
-						<div class="qqInner">bee-blog</div>
+						<div class="qqInner">{{index .p.qq}}</div>
 					</li>
-					<li class="qq">
-						<a href="#" target="_blank" rel="nofollow noopener noreferrer"><img src="/static/images/coolapk.png"></a>
-						<div class="qqInner">bee-blog</div>
-					</li>
-					<li><a href="#" target="_blank" rel="nofollow noopener noreferrer" class="social-github"><img src="/static/images/github.png"></a></li>
-					<li><a href="#" target="_blank" rel="nofollow noopener noreferrer" class="social-bilibili"><img src="/static/images/bilibili.png"></a></li>
-					<li><a href="#" target="_blank" rel="nofollow noopener noreferrer" class="social-bilibili"><img src="/static/images/music.png"></a></li>
+					<li><a href="{{index .p.github}}" target="_blank" rel="nofollow noopener noreferrer" class="social-github"><img src="/static/images/github.png"></a></li>
 				</ul>
 			</div>
 		</div>
@@ -40,7 +34,7 @@
 	<!-- 顶部公告内容 -->
 	<div class="notice">
 		<i class="iconfont"></i>
-		<div class="notice-content">学习、记录、成长、生活</div>
+		<div class="notice-content">{{index .p.motto}}</div>
 	</div>
 	<!-- 聚焦内容 -->
 	<div class="top-feature">

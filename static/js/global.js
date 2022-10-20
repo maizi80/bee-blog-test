@@ -191,17 +191,23 @@ var mNav_hide = function(){
 */
 var loadSingle = function(){
 	$("#pagination a").on("click", function(){
+        p = $("#page_number").val();
+        let hrefs = $(this).attr("href").split("/")
+        let l = hrefs.length
+        let cur = hrefs[l-1]
 	    $(this).addClass("loading").text("");
 	    $.ajax({
-		type: "POST",
+		type: "get",
 	        url: $(this).attr("href") + "#main",
 	        success: function(data){
 	            result = $(data).find("#main .post");
-	            nextHref = $(data).find("#pagination a").attr("href");
+                let next = parseInt(cur)+1
+                hrefs[l-1] = next
+                nextHref = hrefs.join("/")
 	            // In the new content
 	            $("#main").append(result.fadeIn(300));
 	            $("#pagination a").removeClass("loading").text("加载更多");
-	            if ( nextHref != undefined ) {
+	            if ( next<=p ) {
 	                $("#pagination a").attr("href", nextHref);
 	            } else {
 	            // If there is no link, that is the last page, then remove the navigation

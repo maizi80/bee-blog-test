@@ -40,9 +40,10 @@
 	<div class="top-feature">
 		<h1 class="fes-title">聚焦</h1>
 		<ul class="feature-content">
-			<li class="feature-1"><a href="/Web/Akina.html"><div class="feature-title"><span class="foverlay">Akina</span></div><img src="/static/images/feature/feature1.jpg"></a></li>
-			<li class="feature-2"><a href="/Web/userAkina.html"><div class="feature-title"><span class="foverlay">使用说明</span></div><img src="/static/images/feature/feature2.jpg"></a></li>
-			<li class="feature-3"><a href="/archives.html"><div class="feature-title"><span class="foverlay">文章归档</span></div><img src="/static/images/feature/feature3.jpg"></a></li>
+			{{range $k,$r := .recomends}}
+			<li class="feature-{{$k}}"><a href='{{urlfor "ArticleController.Get" ":id" $r.Id}}'><div class="feature-title"><span class="foverlay">{{$r.Title}}</span></div><img src="{{$r.Image}}"></a></li>
+			{{end}}
+
 		</ul>
 	</div>
 	<!-- 主页内容 -->
@@ -60,11 +61,11 @@
       			<img src="{{$article.Image}}">
     			</a>
 				</div>
-				<h1 class="entry-title"><a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'>{{if compare $article.Status 1}}<span style="color:#ff6d6d;font-weight:600">[置顶] </span>  {{end}}{{$article.Title}}</a></h1>
+				<h1 class="entry-title"><a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'>{{if compare $article.IsTop 1}}<span style="color:#ff6d6d;font-weight:600">[置顶] </span>  {{end}}{{$article.Title}}</a></h1>
 				<div class="p-time">
 					<i class="iconfont"></i> {{date $article.PublishedAt "Y-m-d"}}<i class="iconfont hotpost" style="margin-left: 5px;"></i>
 				</div>
-				<a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'><p>{{$article.Introduction}}...</p></a>
+				<a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'><p>{{substr $article.Introduction 0 80}}...</p></a>
 				<!-- 文章下碎碎念 -->
 				<footer class="entry-footer">
 					<div class="post-more">
@@ -83,15 +84,10 @@
 			<hr>
 		</article>
 		{{end}}
-
 		<!-- 结束文章循环输出 -->
-		<!-- 翻页按钮 -->
-		<nav class="navigator">
-			<i class="navnumber">1 / 9</i>
-			<a class="next" title="" href="/page/2/"><i class="iconfont"></i></a>
-		</nav>
 	</main>
-	<div id="pagination"><a class="next" title="" href="/page/2/">加载更多</a></div>
+		<input type="hidden" id="page_number" value="{{.co}}">
+		<div id="pagination"><a class="next" title="" href="/article/home/page/2">加载更多</a></div>
 </div>
 </div>
 <!-- 结束主页内容 -->

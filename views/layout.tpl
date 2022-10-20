@@ -55,15 +55,15 @@
                             <li><a href="#">分类</a>
                                 <ul class="sub-menu">
                                     {{range $k, $category := .categorys }}
-                                    <li><a href="/category/{{$category.Alias}}">{{$category.Name}}</a></li>
+                                    <li><a href="/list/category/{{$category.Id}}">{{$category.Name}}</a></li>
                                     {{end}}
                                 </ul>
                             </li>
                             <li><a href="#">更多</a>
                                 <ul class="sub-menu">
                                     <li><a href="/message">留言</a></li>
-                                    <li><a href="/tags">标签云</a></li>
-                                    <li><a href="/archives">文章归档</a></li>
+                                    <li><a href="/list/tags">标签云</a></li>
+                                    <li><a href="/list/archives">文章归档</a></li>
                                     <li><a href="/about">关于博主</a></li>
                                 </ul>
                             </li>

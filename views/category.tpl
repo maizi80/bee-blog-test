@@ -1,33 +1,48 @@
-<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 
-    <a class="btn btn-primary btn-add" href="/category/add" role="button">添加</a>
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>别名</th>
-                <th>名字</th>
-                <th>排序</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{range $key,$category := .categorys}}
-            <tr>
-                <td>{{$category.Id}}</td>
-                <td>{{$category.Alias}}</td>
-                <td>{{$category.Name}}</td>
-                <td>{{$category.Sort}}</td>
-                <td>
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <a role="button" class="btn btn-primary btn-min" href="/category/{{$category.Id}}" >编辑</a>
-                        <a role="button" class="btn btn-danger btn-min" onclick="delRow(this)" url="/category/{{$category.Id}}" >删除</a>
+<div id="content" class="site-content">
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+            <!-- 判断搜索是否有结果-是 -->
+            <header class="page-header">
+                <h1 class="page-title">搜索结果: <span>分类“{{.category.Name}}”下的文章</span></h1>
+                <span>找到{{.count}}篇</span>
+            </header>
+            <!-- 开始文章循环输出 -->
+            {{range $key,$a := .articles}}
+            <article class="post post-list">
+                <!-- 判断文章输出样式 -->
+                <div class="post-entry">
+                    <div class="feature">
+                        <a href='{{urlfor "ArticleController.Get" ":id" $a.Id}}'><div class="overlay"><i class="iconfont"></i></div>
+                            <img src="{{$a.Image}}">
+                        </a>
                     </div>
-                </td>
-            </tr>
+                    <h1 class="entry-title"><a href='{{urlfor "ArticleController.Get" ":id" $a.Id}}'>{{if compare $a.IsTop 1}}<span style="color:#ff6d6d;font-weight:600">[置顶] </span>  {{end}}{{$a.Title}}</a></h1>
+                    <div class="p-time">
+                        <i class="iconfont"></i> {{date $a.PublishedAt "Y-m-d"}}
+                    </div>
+                    <a href='{{urlfor "ArticleController.Get" ":id" $a.Id}}'><p>{{substr $a.Introduction 0 80}}...</p></a>
+                    <!-- 文章下碎碎念 -->
+                    <footer class="entry-footer">
+                        <div class="post-more">
+                            <a href='{{urlfor "ArticleController.Get" ":id" $a.Id}}'><i class="iconfont"></i></a>
+                        </div>
+                        <div class="info-meta">
+                            <div class="comnum">
+                                <span><i class="iconfont"></i><a href='{{urlfor "ArticleController.Get" ":id" $a.Id}}'>{{$a.CommentCount}}条评论</a></span>
+                            </div>
+                            <div class="views">
+                                <span><i class="iconfont"></i>{{$a.ViewCount}} 热度</span>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+                <hr>
+            </article>
             {{end}}
-            </tbody>
-        </table>
+            <!-- 结束文章循环输出 -->
+        </main>
+        <input type="hidden" id="page_number" value="{{.co}}">
+        <div id="pagination"><a class="next" title="" href="/article/category/page/{{.category.Id}}/2">加载更多</a></div>
     </div>
-</main>
+</div>

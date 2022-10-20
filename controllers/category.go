@@ -17,7 +17,7 @@ func (c *CategoryController) Get() {
 	orm.NewOrm().QueryTable(new(models.Category)).All(&categorys)
 	c.Data["categorys"] = categorys
 	c.Layout = "admin_layout.tpl"
-	c.TplName = "category.tpl"
+	c.TplName = "category/index.tpl"
 }
 
 func (c *CategoryController) Create() {

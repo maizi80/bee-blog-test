@@ -43,3 +43,34 @@ func (c *HomeController) Get() {
 	c.Layout = "layout.tpl"
 	c.TplName = "index.tpl"
 }
+
+func (c *HomeController) Category() {
+	cid := c.Ctx.Input.Param(":cid")
+	cidInt, _ := strconv.Atoi(cid)
+	page := c.Ctx.Input.Param(":page")
+	if page == "" {
+		page = "1"
+	}
+	pageInt, _ := strconv.Atoi(page)
+
+	limit := 2
+	offset := (pageInt - 1) * limit
+
+	o := orm.NewOrm()
+	var articles []*models.Article
+	qs := o.QueryTable("article").Filter("Category__exact", cidInt).Filter("status", 1)
+	qs.Limit(limit, offset).OrderBy("-is_top", "sort", "-published_at").RelatedSel().All(&articles)
+	count, _ := qs.Count()
+	co := int(math.Ceil(float64(count) / float64(limit)))
+
+	var category models.Category
+	o.QueryTable("category").Filter("Id", cidInt).One(&category, "Id", "Name")
+
+	c.Data["articles"] = articles
+	c.Data["Title"] = "分类-" + category.Name
+	c.Data["co"] = co
+	c.Data["count"] = count
+	c.Data["category"] = category
+	c.Layout = "layout.tpl"
+	c.TplName = "category.tpl"
+}

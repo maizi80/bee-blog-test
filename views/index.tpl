@@ -53,13 +53,13 @@
 <!-- 结束搜索判断 -->
 		<!-- 开始文章循环输出 -->
 		{{range $key,$article := .articles}}
-    	<article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
+    	<article class="post post-list">
 		<!-- 判断文章输出样式 -->
 			<div class="post-entry">
 				<div class="feature">
 					<a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'><div class="overlay"><i class="iconfont"></i></div>
-      			<img src="{{$article.Image}}">
-    			</a>
+						<img src="{{$article.Image}}">
+					</a>
 				</div>
 				<h1 class="entry-title"><a href='{{urlfor "ArticleController.Get" ":id" $article.Id}}'>{{if compare $article.IsTop 1}}<span style="color:#ff6d6d;font-weight:600">[置顶] </span>  {{end}}{{$article.Title}}</a></h1>
 				<div class="p-time">

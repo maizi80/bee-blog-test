@@ -168,7 +168,7 @@ $(function(){
 
 	});
 
-    if ($("#uid").val() == "") $("#toggle-comment-info").click()
+    if ($("#uid").val() == "") $("#comment-author-info").show()
 
 });
  

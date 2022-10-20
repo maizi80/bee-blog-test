@@ -2,6 +2,7 @@ package services
 
 import (
 	"bee-blog/models"
+	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 )
 
@@ -22,6 +23,7 @@ func GetComments(aid int) []*Comments {
 	var comments []models.Comment
 	o := orm.NewOrm().QueryTable(new(models.Comment))
 	o.Filter("aid", aid).OrderBy("-created_at").All(&comments)
+	fmt.Println(comments)
 	cs := BuildTree(comments, 0)
 	return cs
 }

@@ -20,7 +20,7 @@
                         </div>
                         <section class="commeta">
                             <div class="left">
-                                <h4 class="author"><a href="#">{{$common.Content}}</a></h4>
+                                <h4 class="author"><a href="#">{{$common.UserName}}</a></h4>
                             </div>
                             <a rel="nofollow" class="comment-reply-link" href="#" onclick="return TypechoComment.reply(&#39;comment-{{$common.Id}}&#39;, {{$common.Id}});" aria-label="回复给{{$common.UserName}}">回复</a>
                             <div class="right">
@@ -95,7 +95,7 @@
                     <div class="com-footer">
                         <input class="submit" name="submit" type="submit" id="submit" tabindex="5" value="发表评论">
                         <input type="hidden" name="comment_post_ID" value="{{.article.Id}}" id="comment_post_ID">
-                        <input type="hidden" name="comment_parent" id="comment_parent" value="{{.article.Id}}">
+                        <input type="hidden" name="comment_parent" id="comment_parent" value="0">
                         <!--表情-->
                         <div class="OwO">
                             <div class="OwO-logo"><span>OωO表情</span></div>

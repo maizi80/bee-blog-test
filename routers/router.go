@@ -30,5 +30,6 @@ func init() {
 	beego.Router("/article/tag/page/:tid/:page", &controllers.HomeController{}, "get:Tag")
 	beego.Router("/search", &controllers.HomeController{}, "post:Search")
 	beego.Router("/article/search/page/:key/:page", &controllers.HomeController{}, "get:Search")
+	beego.Router("/message", &controllers.HomeController{}, "get:Message")
 
 }

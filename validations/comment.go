@@ -5,5 +5,5 @@ type CommentValidate struct {
 	Email   string `valid:"Required;Email;"`
 	Content string `valid:"Required;"`
 	Aid     int    `valid:"Required;"`
-	Pid     int    `valid:"Required;"`
+	Pid     int    ``
 }

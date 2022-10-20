@@ -3,6 +3,7 @@ package controllers
 import (
 	"bee-blog/models"
 	"bee-blog/services"
+	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	"math"
 	"strconv"
@@ -152,4 +153,28 @@ func (c *HomeController) Search() {
 	c.Data["type"] = "search"
 	c.Layout = "layout.tpl"
 	c.TplName = "list.tpl"
+}
+
+func (c *HomeController) Message() {
+	aid := "100000"
+	pageInt, _ := strconv.Atoi(aid)
+	// 评论列表
+	commons := services.GetComments(pageInt)
+	fmt.Println(commons)
+	article := make(map[string]string)
+	article["Id"] = aid
+
+	// 获取session
+	uid := c.GetSession("uid")
+	username := c.GetSession("username")
+
+	c.LayoutSections = make(map[string]string)
+	c.Data["commons"] = commons
+	c.Data["article"] = article
+	c.Data["uid"] = uid
+	c.Data["username"] = username
+	c.LayoutSections["Scripts"] = "a_js.tpl"
+	c.LayoutSections["Comment"] = "comment.tpl"
+	c.Layout = "layout.tpl"
+	c.TplName = "message.tpl"
 }

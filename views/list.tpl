@@ -4,7 +4,7 @@
         <main id="main" class="site-main" role="main">
             <!-- 判断搜索是否有结果-是 -->
             <header class="page-header">
-                <h1 class="page-title">搜索结果: <span>分类“{{.list.Name}}”下的文章</span></h1>
+                <h1 class="page-title">搜索结果: <span>{{.list.Name}}的文章</span></h1>
                 <span>找到{{.count}}篇</span>
             </header>
             <!-- 开始文章循环输出 -->

@@ -65,9 +65,10 @@ func (c *HomeController) Category() {
 
 	var category models.Category
 	o.QueryTable("category").Filter("Id", cidInt).One(&category, "Id", "Name")
+	c.Data["Title"] = "分类-" + category.Name
+	category.Name = "分类 “" + category.Name + "” 下"
 
 	c.Data["articles"] = articles
-	c.Data["Title"] = "分类-" + category.Name
 	c.Data["co"] = co
 	c.Data["count"] = count
 	c.Data["list"] = category
@@ -108,12 +109,47 @@ func (c *HomeController) TagList() {
 	var tag models.Tag
 	o.QueryTable("tag").Filter("Id", tidInt).One(&tag, "Id", "Name")
 
-	c.Data["articles"] = articles
 	c.Data["Title"] = "标签-" + tag.Name
+	tag.Name = "标签 “" + tag.Name + "” 下"
+	c.Data["articles"] = articles
 	c.Data["co"] = co
 	c.Data["count"] = count
 	c.Data["list"] = tag
 	c.Data["type"] = "tag"
+	c.Layout = "layout.tpl"
+	c.TplName = "list.tpl"
+}
+
+func (c *HomeController) Search() {
+	key := c.GetString("s")
+
+	page := c.Ctx.Input.Param(":page")
+	if page == "" {
+		page = "1"
+	}
+	pageInt, _ := strconv.Atoi(page)
+
+	limit := 2
+	offset := (pageInt - 1) * limit
+
+	o := orm.NewOrm()
+	var articles []*models.Article
+	qs := o.QueryTable("article").Filter("title__icontains", key).Filter("status", 1)
+	qs.Limit(limit, offset).OrderBy("-is_top", "sort", "-published_at").RelatedSel().All(&articles)
+	count, _ := qs.Count()
+	co := int(math.Ceil(float64(count) / float64(limit)))
+
+	list := make(map[string]string)
+	list["Name"] = "包含关键字“" + key + "”的文章"
+	list["Id"] = key
+
+	c.Data["Title"] = "搜索-" + key
+	c.Data["articles"] = articles
+
+	c.Data["co"] = co
+	c.Data["count"] = count
+	c.Data["list"] = list
+	c.Data["type"] = "search"
 	c.Layout = "layout.tpl"
 	c.TplName = "list.tpl"
 }

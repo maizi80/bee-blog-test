@@ -25,4 +25,7 @@ func init() {
 	beego.Router("/admin/:aid/:type/:status", &controllers.AdminController{}, "put:ChangeStatus")
 	beego.Router("/list/category/:cid", &controllers.HomeController{}, "get:Category")
 	beego.Router("/article/category/page/:cid/:page", &controllers.HomeController{}, "get:Category")
+	beego.Router("/list/tag", &controllers.HomeController{}, "get:Tag")
+	beego.Router("/list/tag/:tid", &controllers.HomeController{}, "get:TagList")
+	beego.Router("/article/tag/page/:tid/:page", &controllers.HomeController{}, "get:Tag")
 }

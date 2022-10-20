@@ -70,7 +70,50 @@ func (c *HomeController) Category() {
 	c.Data["Title"] = "分类-" + category.Name
 	c.Data["co"] = co
 	c.Data["count"] = count
-	c.Data["category"] = category
+	c.Data["list"] = category
+	c.Data["type"] = "category"
 	c.Layout = "layout.tpl"
-	c.TplName = "category.tpl"
+	c.TplName = "list.tpl"
+}
+
+func (c *HomeController) Tag() {
+	var tag []models.Tag
+	orm.NewOrm().QueryTable("tag").All(&tag)
+
+	c.Data["tag"] = tag
+	c.Data["Title"] = "标签云"
+	c.Layout = "layout.tpl"
+	c.TplName = "tag.tpl"
+}
+
+func (c *HomeController) TagList() {
+	tid := c.Ctx.Input.Param(":tid")
+	tidInt, _ := strconv.Atoi(tid)
+	page := c.Ctx.Input.Param(":page")
+	if page == "" {
+		page = "1"
+	}
+	pageInt, _ := strconv.Atoi(page)
+
+	limit := 2
+	offset := (pageInt - 1) * limit
+
+	o := orm.NewOrm()
+	var articles []*models.Article
+	qs := o.QueryTable("article").Filter("tag__icontains", tidInt).Filter("status", 1)
+	qs.Limit(limit, offset).OrderBy("-is_top", "sort", "-published_at").RelatedSel().All(&articles)
+	count, _ := qs.Count()
+	co := int(math.Ceil(float64(count) / float64(limit)))
+
+	var tag models.Tag
+	o.QueryTable("tag").Filter("Id", tidInt).One(&tag, "Id", "Name")
+
+	c.Data["articles"] = articles
+	c.Data["Title"] = "标签-" + tag.Name
+	c.Data["co"] = co
+	c.Data["count"] = count
+	c.Data["list"] = tag
+	c.Data["type"] = "tag"
+	c.Layout = "layout.tpl"
+	c.TplName = "list.tpl"
 }

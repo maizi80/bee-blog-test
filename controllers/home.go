@@ -3,7 +3,6 @@ package controllers
 import (
 	"bee-blog/models"
 	"bee-blog/services"
-	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	"math"
 	"strconv"
@@ -160,7 +159,6 @@ func (c *HomeController) Message() {
 	pageInt, _ := strconv.Atoi(aid)
 	// 评论列表
 	commons := services.GetComments(pageInt)
-	fmt.Println(commons)
 	article := make(map[string]string)
 	article["Id"] = aid
 
@@ -169,6 +167,8 @@ func (c *HomeController) Message() {
 	username := c.GetSession("username")
 
 	c.LayoutSections = make(map[string]string)
+
+	c.Data["Title"] = "留言"
 	c.Data["commons"] = commons
 	c.Data["article"] = article
 	c.Data["uid"] = uid
@@ -177,4 +177,27 @@ func (c *HomeController) Message() {
 	c.LayoutSections["Comment"] = "comment.tpl"
 	c.Layout = "layout.tpl"
 	c.TplName = "message.tpl"
+}
+func (c *HomeController) About() {
+	aid := "200000"
+	pageInt, _ := strconv.Atoi(aid)
+	// 评论列表
+	commons := services.GetComments(pageInt)
+	article := make(map[string]string)
+	article["Id"] = aid
+
+	// 获取session
+	uid := c.GetSession("uid")
+	username := c.GetSession("username")
+
+	c.LayoutSections = make(map[string]string)
+	c.Data["Title"] = "关于博主"
+	c.Data["commons"] = commons
+	c.Data["article"] = article
+	c.Data["uid"] = uid
+	c.Data["username"] = username
+	c.LayoutSections["Scripts"] = "a_js.tpl"
+	c.LayoutSections["Comment"] = "comment.tpl"
+	c.Layout = "layout.tpl"
+	c.TplName = "about.tpl"
 }

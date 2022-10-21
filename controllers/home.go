@@ -3,6 +3,7 @@ package controllers
 import (
 	"bee-blog/models"
 	"bee-blog/services"
+	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	"math"
 	"strconv"
@@ -22,7 +23,7 @@ func (c *HomeController) Get() {
 	var articles []models.Article
 	limit := 5
 	offset := (pageInt - 1) * limit
-	qs := o.QueryTable(new(models.Article)).Filter("status", 1).Limit(5).OrderBy("-is_top", "sort", "-published_at")
+	qs := o.QueryTable(new(models.Article)).Filter("status", 1).OrderBy("-is_top", "sort", "-published_at")
 	qs.Limit(limit, offset).All(&articles)
 
 	count, _ := qs.Count()
@@ -200,4 +201,34 @@ func (c *HomeController) About() {
 	c.LayoutSections["Comment"] = "comment.tpl"
 	c.Layout = "layout.tpl"
 	c.TplName = "about.tpl"
+}
+
+type Archive struct {
+	Id    uint
+	Title string
+	Date  string
+}
+
+func (c *HomeController) Archive() {
+	var articles []*models.Article
+	orm.NewOrm().QueryTable(new(models.Article)).Filter("status", 1).OrderBy("-is_top", "sort", "-published_at").All(&articles)
+
+	//a := make([]Archive, 0)
+	archives := make(map[string][]Archive)
+	for _, article := range articles {
+		month := article.PublishedAt.Format("2006-01")
+		day := article.PublishedAt.Format("01-02")
+		archive := Archive{
+			Id:    article.Id,
+			Title: article.Title,
+			Date:  day,
+		}
+		archives[month] = append(archives[month], archive)
+	}
+	fmt.Println(archives)
+
+	c.Data["Title"] = "文章归档"
+	c.Data["archives"] = archives
+	c.Layout = "layout.tpl"
+	c.TplName = "archive.tpl"
 }

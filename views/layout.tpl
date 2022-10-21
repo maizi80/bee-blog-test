@@ -63,7 +63,7 @@
                                 <ul class="sub-menu">
                                     <li><a href="/message">留言</a></li>
                                     <li><a href="/list/tag">标签云</a></li>
-                                    <li><a href="/list/archives">文章归档</a></li>
+                                    <li><a href="/archive">文章归档</a></li>
                                     <li><a href="/about">关于博主</a></li>
                                 </ul>
                             </li>

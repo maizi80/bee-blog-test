@@ -30,7 +30,7 @@
                         <div class="body">
                             <p>
                                 <!-- 评论@ -->
-                                {{$common.Content}} <!-- 评论内容 -->
+                                {{str2html $common.Content}} <!-- 评论内容 -->
                             </p>
                         </div>
                     </div>

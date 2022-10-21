@@ -2,7 +2,6 @@ package services
 
 import (
 	"bee-blog/models"
-	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 )
 
@@ -23,7 +22,6 @@ func GetComments(aid int) []*Comments {
 	var comments []models.Comment
 	o := orm.NewOrm().QueryTable(new(models.Comment))
 	o.Filter("aid", aid).OrderBy("-created_at").All(&comments)
-	fmt.Println(comments)
 	cs := BuildTree(comments, 0)
 	return cs
 }
@@ -37,7 +35,7 @@ func BuildTree(comments []models.Comment, parentId int) []*Comments {
 		r.Aid = v.Aid
 		r.UserName = v.Username
 		r.Content = v.Content
-		r.CreatedAt = v.CreatedAt.Format("2022-01-01")
+		r.CreatedAt = v.CreatedAt.Format("2006-01-02")
 		pid := v.Pid
 		if pid == parentId {
 			id := int(v.Id)

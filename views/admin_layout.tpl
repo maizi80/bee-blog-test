@@ -32,7 +32,7 @@
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <div class="alert alert-danger" role="alert" style="position: absolute; left: 50%; top: 25%; z-index:1040; display:none"></div>
-    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/admin">Bee-Blog</a>
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/">Bee-Blog</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

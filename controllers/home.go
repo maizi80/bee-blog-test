@@ -3,6 +3,7 @@ package controllers
 import (
 	"bee-blog/models"
 	"bee-blog/services"
+	"bee-blog/util"
 	"fmt"
 	"github.com/beego/beego/v2/client/orm"
 	"math"
@@ -19,7 +20,7 @@ func (c *HomeController) Get() {
 	if page == "" {
 		page = "1"
 	}
-	pageInt, _ := strconv.Atoi(page)
+	pageInt, _ := util.ToInt(page)
 	var articles []models.Article
 	limit := 5
 	offset := (pageInt - 1) * limit
@@ -47,7 +48,7 @@ func (c *HomeController) Get() {
 
 func (c *HomeController) Category() {
 	cid := c.Ctx.Input.Param(":cid")
-	cidInt, _ := strconv.Atoi(cid)
+	cidInt, _ := util.ToInt(cid)
 	page := c.Ctx.Input.Param(":page")
 	if page == "" {
 		page = "1"
@@ -122,7 +123,11 @@ func (c *HomeController) TagList() {
 }
 
 func (c *HomeController) Search() {
-	key := c.GetString("s")
+	s := c.GetString("s")
+	key := c.Ctx.Input.Param(":key")
+	if s != "" {
+		key = s
+	}
 
 	page := c.Ctx.Input.Param(":page")
 	if page == "" {

@@ -3,9 +3,9 @@ package controllers
 import (
 	"bee-blog/commons"
 	"bee-blog/models"
+	"bee-blog/util"
 	"fmt"
 	"github.com/beego/beego/v2/client/orm"
-	"strconv"
 )
 
 type CategoryController struct {
@@ -37,12 +37,12 @@ func (c *CategoryController) Post() {
 	if name == "" {
 		commons.Fail(c.Ctx, "名字不能为空", "", "")
 	}
-	sortInt, _ := strconv.Atoi(sort)
+	sortInt, _ := util.ToUInt(sort)
 	// 保存数据
 	cat := models.Category{
 		Alias: alias,
 		Name:  name,
-		Sort:  uint(sortInt),
+		Sort:  sortInt,
 	}
 	insert, err := orm.NewOrm().Insert(&cat)
 	if err != nil {
@@ -55,13 +55,13 @@ func (c *CategoryController) Post() {
 
 func (c *CategoryController) Edit() {
 	cid := c.Ctx.Input.Param(":cid")
-	cidInt, _ := strconv.Atoi(cid)
+	cidInt, _ := util.ToUInt(cid)
 	// 验证数据
 	if cidInt == 0 {
 		commons.Fail(c.Ctx, "ID不能为空", "", "")
 	}
 	o := orm.NewOrm()
-	category := models.Category{Id: uint(cidInt)}
+	category := models.Category{Id: cidInt}
 	err := o.Read(&category)
 	if err == orm.ErrNoRows {
 		c.Abort("404")
@@ -73,7 +73,7 @@ func (c *CategoryController) Edit() {
 
 func (c *CategoryController) Put() {
 	cid := c.Ctx.Input.Param(":cid")
-	cidInt, _ := strconv.Atoi(cid)
+	cidInt, _ := util.ToUInt(cid)
 	alias := c.GetString("alias")
 	name := c.GetString("name")
 	sort := c.GetString("sort")
@@ -88,19 +88,19 @@ func (c *CategoryController) Put() {
 	if name == "" {
 		commons.Fail(c.Ctx, "名字不能为空", "", "")
 	}
-	sortInt, _ := strconv.Atoi(sort)
+	sortInt, _ := util.ToUInt(sort)
 	o := orm.NewOrm()
-	err := o.Read(&models.Category{Id: uint(cidInt)})
+	err := o.Read(&models.Category{Id: cidInt})
 	if err == orm.ErrNoRows {
 		commons.Fail(c.Ctx, "数据错误", nil, "")
 	}
 
 	// 保存数据
 	cat := models.Category{
-		Id:    uint(cidInt),
+		Id:    cidInt,
 		Alias: alias,
 		Name:  name,
-		Sort:  uint(sortInt),
+		Sort:  sortInt,
 	}
 	num, err := o.Update(&cat)
 	if err != nil {
@@ -111,12 +111,12 @@ func (c *CategoryController) Put() {
 
 func (c *CategoryController) Delete() {
 	cid := c.Ctx.Input.Param(":cid")
-	cidInt, _ := strconv.Atoi(cid)
+	cidInt, _ := util.ToUInt(cid)
 	// 验证数据
 	if cidInt == 0 {
 		commons.Fail(c.Ctx, "ID不能为空", "", "")
 	}
-	cat := models.Category{Id: uint(cidInt)}
+	cat := models.Category{Id: cidInt}
 	o := orm.NewOrm()
 	err := o.Read(&cat)
 	if err == orm.ErrNoRows {
@@ -126,6 +126,5 @@ func (c *CategoryController) Delete() {
 	if err != nil {
 		commons.Fail(c.Ctx, "删除失败", nil, "")
 	}
-	fmt.Println(cidInt, num)
 	commons.Success(c.Ctx, num, "删除成功", "")
 }

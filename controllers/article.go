@@ -3,20 +3,19 @@ package controllers
 import (
 	"bee-blog/models"
 	"bee-blog/services"
+	"bee-blog/util"
 	"github.com/beego/beego/v2/client/orm"
-	beego "github.com/beego/beego/v2/server/web"
-	"strconv"
 	"strings"
 )
 
 type ArticleController struct {
-	beego.Controller
+	MainController
 }
 
 func (a *ArticleController) Get() {
 	id := a.Ctx.Input.Param(":id")
-	aid, _ := strconv.ParseUint(id, 0, 8)
-	article := models.Article{Id: uint(aid)}
+	aid, _ := util.ToUInt(id)
+	article := models.Article{Id: aid}
 	o := orm.NewOrm()
 	// 流量量+1
 	o.QueryTable("article").Filter("id", uint(aid)).Update(orm.Params{
@@ -39,9 +38,8 @@ func (a *ArticleController) Get() {
 	// 获取session
 	uid := a.GetSession("uid")
 	if uid != nil {
-		uidi := uid.(int64)
-		//cidInt, _ := strconv.Atoi(uidS)
-		user = models.User{Id: uint(uidi)}
+		uidUint, _ := util.ToUInt(uid)
+		user = models.User{Id: uidUint}
 		o.Read(&user)
 	}
 

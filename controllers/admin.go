@@ -6,7 +6,6 @@ import (
 	"bee-blog/util"
 	"bee-blog/validations"
 	"github.com/beego/beego/v2/client/orm"
-	"strconv"
 	"time"
 )
 
@@ -83,12 +82,12 @@ func (c *AdminController) Edit() {
 	o.QueryTable(new(models.Tag)).All(&tags)
 
 	aid := c.Ctx.Input.Param(":aid")
-	aidInt, _ := strconv.Atoi(aid)
+	aidUInt, _ := util.ToUInt(aid)
 	// 验证数据
-	if aidInt == 0 {
+	if aidUInt == 0 {
 		commons.Fail(c.Ctx, "ID不能为空", "", "")
 	}
-	article := models.Article{Id: uint(aidInt)}
+	article := models.Article{Id: aidUInt}
 	err := o.Read(&article)
 	if err == orm.ErrNoRows {
 		c.Abort("404")
@@ -103,7 +102,7 @@ func (c *AdminController) Edit() {
 
 func (c *AdminController) Put() {
 	aid := c.Ctx.Input.Param(":aid")
-	aidInt, _ := strconv.Atoi(aid)
+	aidUInt, _ := util.ToUInt(aid)
 	cid, _ := c.GetInt("category_id", 0)
 	f, h, err := c.GetFile("image")
 	image := c.GetString("img")
@@ -126,14 +125,14 @@ func (c *AdminController) Put() {
 	}
 	commons.Valid(c.Ctx, &a)
 	o := orm.NewOrm()
-	aerr := o.Read(&models.Article{Id: uint(aidInt)})
+	aerr := o.Read(&models.Article{Id: aidUInt})
 	if aerr == orm.ErrNoRows {
 		commons.Fail(c.Ctx, "数据错误", nil, "")
 	}
 	category := models.Category{Id: uint(a.CategoryId)}
 	// 保存数据
 	ao := models.Article{
-		Id:           uint(aidInt),
+		Id:           aidUInt,
 		Title:        a.Title,
 		Introduction: a.Introduction,
 		Content:      a.Content,
@@ -151,12 +150,12 @@ func (c *AdminController) Put() {
 
 func (c *AdminController) Delete() {
 	aid := c.Ctx.Input.Param(":aid")
-	aidInt, _ := strconv.Atoi(aid)
+	aidUInt, _ := util.ToUInt(aid)
 	// 验证数据
-	if aidInt == 0 {
+	if aidUInt == 0 {
 		commons.Fail(c.Ctx, "ID不能为空", "", "")
 	}
-	a := models.Article{Id: uint(aidInt)}
+	a := models.Article{Id: aidUInt}
 	o := orm.NewOrm()
 	err := o.Read(&a)
 	if err == orm.ErrNoRows {
@@ -171,15 +170,15 @@ func (c *AdminController) Delete() {
 
 func (c *AdminController) ChangeStatus() {
 	aid := c.Ctx.Input.Param(":aid")
-	aidInt, _ := strconv.Atoi(aid)
+	aidInt, _ := util.ToUInt(aid)
 	t := c.Ctx.Input.Param(":type")
 	status := c.Ctx.Input.Param(":status")
-	statusInt, _ := strconv.Atoi(status)
+	statusInt, _ := util.ToUInt(status)
 	// 验证数据
 	if aidInt == 0 {
 		commons.Fail(c.Ctx, "ID不能为空", "", "")
 	}
-	a := models.Article{Id: uint(aidInt)}
+	a := models.Article{Id: aidInt}
 	o := orm.NewOrm()
 	err := o.Read(&a)
 	if err == orm.ErrNoRows {
@@ -188,12 +187,12 @@ func (c *AdminController) ChangeStatus() {
 	// 保存数据
 	switch t {
 	case "status":
-		a.Status = uint(statusInt)
+		a.Status = statusInt
 		a.PublishedAt = time.Now()
 	case "top":
-		a.IsTop = uint(statusInt)
+		a.IsTop = statusInt
 	case "recommend":
-		a.IsRecommend = uint(statusInt)
+		a.IsRecommend = statusInt
 	}
 	num, err := orm.NewOrm().Update(&a)
 	if err != nil {

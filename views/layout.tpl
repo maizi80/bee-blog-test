@@ -8,8 +8,9 @@
     <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/static/css/style.css" type="text/css">
     <link rel="stylesheet" href="/static/css/OwO.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/dark.css" type="text/css">  <!-- 个性化选项 CSS 代码 -->
-    <link rel="stylesheet" href="/static/css/blog.css" type="text/css">  <!-- 个性化选项 CSS 代码 -->
+    <link rel="stylesheet" href="/static/css/dark.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/blog.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/default.min.css">
     {{.HtmlHead}}
 </head>
 <body class="home blog hfeed">
@@ -31,7 +32,7 @@
             <div class="site-top">
                 <!-- logo则显示 -->
                 <div class="site-branding">
-                    <div class="site-title"><a href="#"><img src="/static/images/akina.png"></a></div>
+                    <div class="site-title"><a href="/"><img src="/static/images/akina.png"></a></div>
                 </div>
                 <!-- logo 结束 -->
                 <div id="login-reg">
@@ -125,6 +126,7 @@
 <script type="text/javascript" src="/static/js/jquery.pjax.js."></script>
 <script type="text/javascript" src="/static/js/baguetteBox.min.js."></script>
 <script type="text/javascript" src="/static/js/global.js."></script>
+
 {{.Scripts}}
 </body>
 </html>

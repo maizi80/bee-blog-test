@@ -21,13 +21,11 @@
                     <h1 class="entry-title">{{.Title}}</h1>
                     <hr>
                     <div class="breadcrumbs">
-                        <div itemscope="" itemtype="http://schema.org/WebPage" id="crumbs">最后更新时间：{{.article.PublishedAt}}</div>
+                        <div itemscope="" id="crumbs">最后更新时间：{{date .article.PublishedAt "Y-m-d"}}</div>
                     </div>
                 </header>
                 <!-- 正文输出 -->
-                <div class="entry-content">
-                    {{.article.Content}}
-                </div>
+                <div class="entry-content" id="article-content"></div>
                 <!-- 文章底部 -->
                 <footer class="post-footer">
                     <!-- 阅读次数 -->
@@ -46,24 +44,19 @@
                         </ul>
                         <i class="iconfont show-share"></i>
                     </div>
-                    <!-- 赞助按钮 -->
-                    <div class="donate">
-                        <a>赏</a>
-                        <ul class="donate_inner">
-                            <li class="wedonate"><img src="/static/images/weixin.png"></li>
-                            <li class="alidonate"><img src="/static/images/zfb.png"></li>
-                        </ul>
-                    </div>
+
                     <!-- 文章标签 -->
                     <div class="post-tags">
                         <i class="iconfont"></i>
-                        <a href="#">Web</a>
+                        {{range $k,$t := .tag}}
+                        <a href='{{urlfor "ArticleController.TagList" ":tid" $t.Id}}'>{{$t.Name}}</a>
+                        {{end}}
                     </div>
                 </footer>
             </article>
             <!-- 版权声明 -->
             <div class="open-message">
-                <p>声明：Bee-Blog|版权所有，违者必究|如未注明，均为原创|本网站采用<a href="#" target="_blank" rel="nofollow noopener noreferrer">BY-NC-SA</a>协议进行授权</p>
+                <p>声明：Bee-Blog|版权所有，违者必究|如未注明，均为原创</p>
                 <p>转载：转载请注明原文链接 - <a href='{{urlfor "ArticleController.Get" ":id" .article.Id}}'>{{.Title}}</a></p>
             </div>
             <!-- 相邻文章 -->
@@ -90,22 +83,28 @@
             <!-- 判断文章加密结束 -->
             <!-- 个人信息 -->
             <section class="author-profile">
-                <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+                <div class="info" itemprop="author">
                     <div class="pf-gavtar">
                         <div class="pf-tou">
-                            <a><img src="/static/images/tx20110211.png"></a>
+                            <a><img src="/{{index .p.avatar}}"></a>
                         </div>
                     </div>
                     <div class="meta">
                         <span class="title">Author</span>
                         <h3 itemprop="name">
-                            <a href="/" itemprop="url" rel="author">子虚之人</a>
+                            <a href="/" itemprop="url" rel="author">{{index .p.nickname}}</a>
                         </h3>
                     </div>
                 </div>
                 <hr>
-                <p><i class="iconfont"></i>Carpe Diem and Do what I like</p>
+                <p><i class="iconfont"></i>{{index .p.motto_e}}</p>
             </section>
         </main>
     </div>
 </div>
+<script src="/static/js/marked.min.js"></script>
+<script src="/static/js/highlight.min.js"></script>
+<script type="text/javascript">
+    document.getElementById('article-content').innerHTML = marked.parse("{{.article.Content}}");
+    hljs.initHighlightingOnLoad();
+</script>

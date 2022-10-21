@@ -12,7 +12,7 @@
                         <span class="ar-circle"></span>
                         <div class="arrow-left-ar"></div>
                         <div class="brick">
-                            <a href="https://zhebk.cn/Web/WeCenterUpdate.html"><span class="time"><i class="iconfont"></i>{{$a.Date}}</span>{{$a.Title}}</a>
+                            <a href='{{urlfor "ArticleController.Get" ":id" $a.Id}}'><span class="time"><i class="iconfont"></i>{{$a.Date}}</span>{{$a.Title}}</a>
                         </div>
                         {{end}}
                     </div>

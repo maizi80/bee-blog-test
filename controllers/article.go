@@ -34,11 +34,16 @@ func (a *ArticleController) Get() {
 	// 下一篇
 	var next models.Article
 	qs.Filter("id__gt", uint(aid)).OrderBy("id").Limit(1).One(&next)
-	a.SetSession("uid", 1)
-	a.SetSession("username", "test")
+
+	var user models.User
 	// 获取session
 	uid := a.GetSession("uid")
-	username := a.GetSession("username")
+	if uid != nil {
+		uidi := uid.(int64)
+		//cidInt, _ := strconv.Atoi(uidS)
+		user = models.User{Id: uint(uidi)}
+		o.Read(&user)
+	}
 
 	// 获取博主信息
 	var profile []models.Profile
@@ -57,8 +62,7 @@ func (a *ArticleController) Get() {
 	a.Data["pre"] = pre
 	a.Data["next"] = next
 	a.Data["commons"] = commons
-	a.Data["uid"] = uid
-	a.Data["username"] = username
+	a.Data["user"] = user
 	a.Data["p"] = p
 	a.Data["tag"] = tag
 	a.LayoutSections = make(map[string]string)

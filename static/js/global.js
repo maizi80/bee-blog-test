@@ -26,6 +26,7 @@ var ajaxcomments = function(){
 			var nameValue = $('#name').val().replace(/(^\s*)|(\s*$)/g, "");
 			var emailValue = $('#email').val().replace(/(^\s*)|(\s*$)/g, "");
 			var textValue = $(comment_form).find(textarea).val().replace(/(^\s*)|(\s*$)/g, "");
+
 			/* 预检 */
 			var errorNum = 0;
 			if(nameValue == ""){
@@ -168,7 +169,7 @@ $(function(){
 
 	});
 
-    if ($("#uid").val() == "") $("#comment-author-info").show()
+    if ($("#uid").val() == "0") $("#comment-author-info").show()
 
 });
  

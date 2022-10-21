@@ -78,15 +78,15 @@
                 </div>
                 <!-- 输入表单开始 -->
                 <form action='{{urlfor "CommentController.Post" ":aid" .article.Id}}' id="commentform">
-                    <input type="hidden" name="uid" id="uid" value="{{.uid}}">
-                    {{if .uid}}
+                    <input type="hidden" name="uid" id="uid" value="{{.user.Id}}">
+                    {{if .user.Id}}
                     <!-- 如果当前用户已经登录 -->
-                    <div class="author-updown">Welcome back <b>{{.username}}</b>, <a id="toggle-comment-info">[ 修改 ] ↓</a></div>
+                    <div class="author-updown">Welcome back <b>{{.user.Name}}</b>, <a id="toggle-comment-info">[ 修改 ] ↓</a></div>
                     {{end}}
                     <div id="comment-author-info" >
-                        <input type="text" name="email" id="email" class="commenttext" placeholder="Email" value="" size="22" tabindex="1">
+                        <input type="text" name="email" id="email" class="commenttext" placeholder="Email" value="{{.user.Email}}" size="22" tabindex="1">
                         <label for="email"></label>
-                        <input type="text" name="name" id="name" class="commenttext" value="" size="18" placeholder="Name" tabindex="3">
+                        <input type="text" name="name" id="name" class="commenttext" value="{{.user.Name}}" size="18" placeholder="Name" tabindex="3">
                         <label for="name"></label>
                     </div>
                     <div class="clear"></div>
